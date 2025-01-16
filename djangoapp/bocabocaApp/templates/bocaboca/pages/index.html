@@ -1,0 +1,366 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ bocaboca_setup.title }}</title>
+    {% if bocaboca_setup.favicon %}
+    <link rel="shortcut icon" href="{{ bocaboca_setup.favicon.url }}" type="image/png">
+    {% endif %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+/* Ajuste no container de estatísticas */
+.stats {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.counter {
+    flex: 1;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid white;
+    box-sizing: border-box;
+    margin: 0;
+    border-radius: 0;
+}
+.counter h4 {
+    margin-bottom: 10px;
+}
+
+/* Ajuste para remover espaçamento entre stats e o portfolio */
+#portfolio {
+    margin-top: 0;
+}
+
+/* Botões do cabeçalho */
+.header-buttons .btn:first-child {
+    background-color: #ffd700; /* Fundo amarelo ouro */
+    color: black;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.header-buttons .btn:first-child:hover {
+    background-color: #ffc107; /* Amarelo mais escuro ao passar o mouse */
+}
+
+.header-buttons .btn:last-child {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.header-buttons .btn:last-child:hover {
+    background-color: white;
+    color: #007bff; /* Azul do fundo */
+}
+
+/* Texto Dinâmico */
+.dynamic-text span {
+    display: none;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.dynamic-text span.active {
+    display: inline;
+}
+
+/* Submenu com a mesma cor do menu posterior */
+.menu-banner {
+    background-color: #007bff; /* Fundo azul */
+    padding: 20px 0; /* Ajuste de altura */
+}
+
+.menu-banner .nav-link {
+    color: white;
+    margin: 0 15px; /* Espaçamento entre os links */
+    font-size: 1.2rem; /* Aumenta o tamanho da fonte */
+}
+
+.menu-banner .nav-link:hover {
+    color: #cce7ff; /* Cor ao passar o mouse */
+}
+
+/* Portfolio Section */
+#portfolio .row.g-0 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+#portfolio .col-4 {
+    position: relative;
+    flex: 0 0 33.33%;
+    max-width: 33.33%;
+    overflow: hidden; /* Garante que o overlay fique dentro da imagem */
+}
+
+#portfolio img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0.8; /* Torna as imagens ligeiramente opacas */
+}
+
+#portfolio img:hover {
+    opacity: 1; /* Restaura a opacidade ao passar o mouse */
+    transform: scale(1.02); /* Pequeno zoom ao passar o mouse */
+}
+
+#portfolio .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.7); /* Fundo branco semitransparente */
+    color: black; /* Texto em preto */
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none; /* Remove o sublinhado */
+    z-index: 2; /* Garante que o texto fique acima da imagem */
+    opacity: 0; /* Invisível inicialmente */
+    transition: opacity 0.3s ease; /* Suaviza a transição */
+}
+
+#portfolio .col-4:hover .overlay {
+    opacity: 1; /* Torna o overlay visível ao passar o mouse */
+}
+
+#portfolio .col-4:hover img {
+    opacity: 0.8; /* Mantém a imagem visível com o texto */
+}
+
+/* Estilo para o carrossel de depoimentos */
+.testimonials-section {
+    background-color: #007bff; /* Fundo azul */
+    padding: 80px 0; /* Aumenta a altura da seção */
+}
+
+.testimonials-section h2 {
+    color: white; /* Título em branco para destacar */
+}
+
+#testimonialsCarousel .carousel-item {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* Espaçamento mediano entre as caixas */
+}
+
+.testimonial-box {
+    max-width: 300px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    text-align: center;
+}
+
+/* Estilo para o footer */
+footer {
+    background-color: #f8f9fa; /* Fundo cinza claro */
+    padding: 20px 0; /* Padding uniforme, como na página de login */
+    text-align: center;
+    font-size: 1rem;
+    color: #777; /* Cor de texto cinza médio */
+}
+
+footer a {
+    color: #6c757d; /* Cor neutra para links */
+}
+
+footer a:hover {
+    color: #007bff; /* Cor azul ao passar o mouse, para manter a consistência visual */
+}
+</style>
+</head>
+<body>
+    <!-- Top Menu -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">LOGO</a>
+            <div class="input-group w-50">
+                <input type="text" class="form-control" placeholder="Encontre um profissional aqui">
+                <button class="btn btn-primary" type="button">Buscar</button>
+            </div>
+            <div class="d-flex">
+                <a href="{% url 'bocaboca:login' %}" class="btn btn-secondary me-2">Login</a>
+                <a href="{% url 'bocaboca:register' %}" class="btn btn-outline-secondary me-2">Cadastrar</a>
+                <button class="btn btn-warning">Cadastre um profissional</button>
+            </div>
+        </div>
+    </nav>
+    <!-- Secondary Menu -->
+    <div class="menu-banner">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container justify-content-center">
+                <a class="nav-link" href="#como-funciona">Como Funciona</a>
+                <a class="nav-link" href="#encontre-profissional">Encontre um Profissional</a>
+                <a class="nav-link" href="#quero-trabalhar">Quero Trabalhar</a>
+            </div>
+        </nav>
+    </div>
+    <!-- Header Section -->
+    <header class="bg-primary text-white text-center d-flex flex-column justify-content-center align-items-center" style="height: 700px; margin-bottom: 0;">
+        <div>
+            <h1>{{ bocaboca_setup.description }}</h1>
+            <div class="dynamic-text">
+                <span class="active">{{ bocaboca_setup.span_1 }}</span>
+                <span>{{ bocaboca_setup.span_2 }}</span>
+                <span>{{ bocaboca_setup.span_3 }}</span>
+            </div>
+            <div class="d-flex justify-content-center mt-4 header-buttons">
+                <button class="btn">Publicar um Profissional</button>
+                <button class="btn">Quero Trabalhar</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Cadastro Section -->
+    <div class="bg-dark text-white py-1" style="height: 50px; margin-top: 0;">
+        <h5 class="text-center mb-0">Quero me cadastrar</h5>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="container-fluid stats">
+        <div class="counter">
+            <h4>Profissionais Cadastrados</h4>
+            <p>1,234</p>
+        </div>
+        <div class="counter">
+            <h4>Serviços Concluídos</h4>
+            <p>567</p>
+        </div>
+        <div class="counter">
+            <h4>Pagos entre Profissionais</h4>
+            <p>R$ 89,000</p>
+        </div>
+    </div>
+    <!-- Portfolio Section -->
+    <div class="container-fluid p-0" id="portfolio">
+        <div class="row g-0">
+            <div class="col-4">
+                <a href="{% url 'bocaboca:profissional' 'eletricista' %}" class="overlay">Eletricista</a>
+                <img class="img-fluid" src="{% static 'bocabocao/images/portfolio/thumbnails/eletricista.jpg' %}" alt="Eletricista">
+            </div>
+            <div class="col-4">
+                <a href="{% url 'bocaboca:profissional' 'pedreiro' %}" class="overlay">Pedreiro</a>
+                <img class="img-fluid" src="{% static 'bocaboca/images/portfolio/thumbnails/pedreiro.webp' %}" alt="Pedreiro">
+            </div>
+            <div class="col-4">
+                <a href="{% url 'bocaboca:profissional' 'marceneiro' %}" class="overlay">Marceneiro</a>
+                <img class="img-fluid" src="{% static 'bocaboca/images/portfolio/thumbnails/marceneiro.jpg' %}" alt="Marceneiro">
+            </div>
+            <div class="col-4">
+                <a href="{% url 'bocaboca:profissional' 'pintor' %}" class="overlay">Pintor</a>
+                <img class="img-fluid" src="{% static 'bocaboca/images/portfolio/thumbnails/pintor.jpg' %}" alt="Pintor">
+            </div>
+            <div class="col-4">
+                <a href="{% url 'bocaboca:profissional' 'servicosgerais' %}" class="overlay">Serviços Gerais</a>
+                <img class="img-fluid" src="{% static 'bocaboca/images/portfolio/thumbnails/servicosgerais.jpg' %}" alt="Serviços Gerais">
+            </div>
+            <div class="col-4">
+                <a href="{% url 'bocaboca:profissional' 'jardineiro' %}" class="overlay">Jardineiro</a>
+                <img class="img-fluid" src="{% static 'bocaboca/images/portfolio/thumbnails/jardineiro.jpg' %}" alt="Jardineiro">
+            </div>
+        </div>
+    </div>
+    <!-- Testimonials Carousel Section -->
+    <section class="testimonials-section">
+        <h2 class="text-center mb-4">O que nossos clientes estão dizendo</h2>
+        <div id="testimonialsCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner text-center">
+                <!-- Slide 1 -->
+                <div class="carousel-item active">
+                    <div class="d-flex justify-content-center">
+                        <div class="testimonial-box">
+                            <p>"Ótimo atendimento e qualidade nos serviços prestados. Recomendo!"</p>
+                            <p class="fw-bold">- João Silva</p>
+                        </div>
+                        <div class="testimonial-box">
+                            <p>"Encontrei o profissional ideal para minha reforma. Excelente!"</p>
+                            <p class="fw-bold">- Maria Oliveira</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-item">
+                    <div class="d-flex justify-content-center">
+                        <div class="testimonial-box">
+                            <p>"Profissionais de alta qualidade e muito eficientes!"</p>
+                            <p class="fw-bold">- Pedro Santos</p>
+                        </div>
+                        <div class="testimonial-box">
+                            <p>"Rápido, fácil e confiável. Super satisfeita!"</p>
+                            <p class="fw-bold">- Ana Clara</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#testimonialsCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#testimonialsCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </section>
+<!-- Footer -->
+<footer class="bg-light py-5">
+    <div class="container px-4 px-lg-5">
+        <div class="d-flex justify-content-center">
+            <a href="https://x.com" class="text-muted mx-3" target="_blank">
+                <i class="fab fa-x-twitter"></i>
+            </a>
+            <a href="https://instagram.com/whitelabelrobochat/" class="text-muted mx-3" target="_blank">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://api.whatsapp.com/send?phone=+5531998210115&text=Olá!" class="text-muted mx-3" target="_blank">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://youtube.com/@whitelabel" class="text-muted mx-3" target="_blank">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="https://telegram.org" class="text-muted mx-3" target="_blank">
+                <i class="fab fa-telegram"></i>
+            </a>
+        </div>
+        <div class="small text-center text-muted mt-3">Copyright &copy; {% now "Y" %} - Boca a Boca</div>
+    </div>  
+</footer>
+    <!-- JavaScript para Texto Dinâmico -->
+    <script>
+        const spans = document.querySelectorAll('.dynamic-text span');
+        let index = 0;
+
+        setInterval(() => {
+            spans.forEach((span, i) => {
+                span.classList.remove('active');
+                if (i === index) span.classList.add('active');
+            });
+            index = (index + 1) % spans.length;
+        }, 2000); // Troca a cada 2 segundos
+    </script>
+</body>
+</html>

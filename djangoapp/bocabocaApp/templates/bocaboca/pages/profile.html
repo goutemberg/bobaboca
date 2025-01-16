@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Perfil</title>
+    {% if bocaboca_setup.favicon %}
+    <link rel="shortcut icon" href="{{ bocaboca_setup.favicon.url }}" type="image/png">
+    {% endif %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .form-section {
+            background-color: #f8f9fa;
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        .form-heading {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        .navbar .input-group {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .navbar h4 {
+            margin: 0;
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+        .btn-secondary.rounded-pill {
+            border-radius: 50px;
+            padding: 10px 20px;
+        }
+        .login-container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        .btn-facebook, .btn-google {
+            width: 48%;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+        .btn-google {
+            background-color: #db4a39;
+            color: white;
+        }
+        .btn-facebook {
+            background-color: #4267B2;
+            color: white;
+        }
+        .separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: #555;
+        }
+        .separator::before,
+        .separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #ddd;
+        }
+        .g-recaptcha {
+            margin: 20px 0;
+            transform: scale(0.85);
+            transform-origin: center;
+        }
+        .btn-success {
+            font-size: 1.2rem;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Menu -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">LOGO</a>
+            <div class="input-group">
+                {% if user.is_authenticated %}
+                    <h4 class="me-2">Olá, {{ user.username }}!</h4>
+                    <form action="{% url 'bocaboca_profile:logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary rounded-pill">Sair</button>
+                    </form>
+                {% else %}
+                    <h4 class="me-2">Já tem uma conta no Boca-Boca?</h4>
+                    <a href="{% url ''bocaboca:register'' %}" class="btn btn-secondary rounded-pill">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <!-- Main content and form -->
+    <body>
+        <div class="container my-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8 form-section">
+                    <h2 class="form-heading">Cadastro de Perfil</h2>
+                    {% comment %} <form method="POST" action="{% url 'bocaboca:submit_profile' username=username %}"> {% endcomment %}
+                    <form method="POST" action="{% url 'bocaboca_profile:handle_profile_submission' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Nome:</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{full_name}}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nickname" class="form-label">Apelido:</label>
+                            <input type="text" class="form-control" id="nickname" name="nickname" value="{{nickname}}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="professional_title" class="form-label">Título Profissional:</label>
+                            <input type="text" class="form-control" id="professional_title" name="professional_title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="about" class="form-label">Sobre você:</label>
+                            <textarea class="form-control" id="about" name="about" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="professional_experience" class="form-label">Experiência Profissional:</label>
+                            <textarea class="form-control" id="professional_experience" name="professional_experience" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="interest_areas" class="form-label">Áreas de Interesse:</label>
+                            <div class="row">
+                                <!-- Primeira linha -->
+                                <div class="col-md-4 form-check">
+                                    <input class="form-check-input" type="checkbox" value="tecnologia" id="tecnologia" name="interest_areas">
+                                    <label class="form-check-label" for="tecnologia">Tecnologia</label>
+                                </div>
+                                <div class="col-md-4 form-check">
+                                    <input class="form-check-input" type="checkbox" value="ciencia" id="ciencia" name="interest_areas">
+                                    <label class="form-check-label" for="ciencia">Ciência</label>
+                                </div>
+                                <div class="col-md-4 form-check">
+                                    <input class="form-check-input" type="checkbox" value="engenharia" id="engenharia" name="interest_areas">
+                                    <label class="form-check-label" for="engenharia">Engenharia</label>
+                                </div>
+                                <!-- Segunda linha -->
+                                <div class="col-md-4 form-check">
+                                    <input class="form-check-input" type="checkbox" value="arte" id="arte" name="interest_areas">
+                                    <label class="form-check-label" for="arte">Arte</label>
+                                </div>
+                                <div class="col-md-4 form-check">
+                                    <input class="form-check-input" type="checkbox" value="matematica" id="matematica" name="interest_areas">
+                                    <label class="form-check-label" for="matematica">Matemática</label>
+                                </div>
+                                <div class="col-md-4 form-check">
+                                    <input class="form-check-input" type="checkbox" value="fisica" id="fisica" name="interest_areas">
+                                    <label class="form-check-label" for="fisica">Física</label>
+                                </div>
+                                <!-- Terceira linha -->
+                                <div class="col-md-4 form-check">
+                                    <input class="form-check-input" type="checkbox" value="historia" id="historia" name="interest_areas">
+                                    <label class="form-check-label" for="historia">História</label>
+                                </div>
+                                <div class="col-md-4 form-check">
+                                    <input class="form-check-input" type="checkbox" value="literatura" id="literatura" name="interest_areas">
+                                    <label class="form-check-label" for="literatura">Literatura</label>
+                                </div>
+                                <div class="col-md-4 form-check">
+                                    <input class="form-check-input" type="checkbox" value="filosofia" id="filosofia" name="interest_areas">
+                                    <label class="form-check-label" for="filosofia">Filosofia</label>
+                                </div>
+                                <!-- Quarta linha -->
+                                <div class="col-md-4 form-check">
+                                    <input class="form-check-input" type="checkbox" value="biologia" id="biologia" name="interest_areas">
+                                    <label class="form-check-label" for="biologia">Biologia</label>
+                                </div>
+                                <div class="col-md-4 form-check">
+                                    <input class="form-check-input" type="checkbox" value="quimica" id="quimica" name="interest_areas">
+                                    <label class="form-check-label" for="quimica">Química</label>
+                                </div>
+                                <div class="col-md-4 form-check">
+                                    <input class="form-check-input" type="checkbox" value="geografia" id="geografia" name="interest_areas">
+                                    <label class="form-check-label" for="geografia">Geografia</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ability" class="form-label">Habilidades:</label>
+                            <textarea class="form-control" id="ability" name="ability" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+     <!-- Footer -->
+     <footer class="bg-light py-5">
+        <div class="container px-4 px-lg-5">
+            <div class="d-flex justify-content-center">
+                <a href="https://x.com" class="text-muted mx-3" target="_blank">
+                    <i class="fab fa-x-twitter"></i>
+                </a>
+                <a href="https://instagram.com/whitelabelrobochat/" class="text-muted mx-3" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://api.whatsapp.com/send?phone=+5531998210115&text=Olá!" class="text-muted mx-3" target="_blank"> 
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="https://youtube.com/@whitelabel" class="text-muted mx-3" target="_blank">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://telegram.org" class="text-muted mx-3" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                </a>
+            </div>
+            <div class="small text-center text-muted mt-3">Copyright &copy; {% now "Y" %} - Boca a Boca</div>
+        </div>  
+        </footer>
+</body>
+</html>
