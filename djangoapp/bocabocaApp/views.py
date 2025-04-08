@@ -3,7 +3,7 @@ from django.urls import reverse, NoReverseMatch
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from bocaboca_profile.models import NewUser, InterestArea
+from bocaboca_profile.models import NewUser
 
 
 def index(request):
