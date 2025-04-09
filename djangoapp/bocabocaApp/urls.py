@@ -17,6 +17,8 @@ urlpatterns = [
     path('submit_profile/', app_views.submit_profile, name='submit_profile'),
     path('new_user/edit/<str:username>/', profile_views.edit_new_user, name='edit_new_user'),
     path('activation_success/<str:email>/', profile_views.activation_success, name='activation_success'),
+    path('register/client/', app_views.client, name='client'),
+    path('register/service_provider/', app_views.service_provider, name='service_provider'),
 
 ]
 

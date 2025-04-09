@@ -74,3 +74,9 @@ def submit_profile(request):
     else:
         return render(request, 'nome_do_template.html')
 
+def client(request):
+    return render(request, 'bocaboca/pages/client.html')
+
+def service_provider(request):
+    return render(request, 'bocaboca/pages/service_provider.html')
+
