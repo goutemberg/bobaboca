@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publique um Serviço</title>
+    {% if bocaboca_setup.favicon %}
+    <link rel="shortcut icon" href="{{ bocaboca_setup.favicon.url }}" type="image/png">
+    {% endif %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .form-section {
+            background-color: #f8f9fa;
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        .form-heading {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        .navbar .input-group {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .navbar h4 {
+            margin: 0;
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+        .btn-secondary.rounded-pill {
+            border-radius: 50px;
+            padding: 10px 20px;
+        }
+        .login-container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        .btn-facebook, .btn-google {
+            width: 48%;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+        .btn-google {
+            background-color: #db4a39;
+            color: white;
+        }
+        .btn-facebook {
+            background-color: #4267B2;
+            color: white;
+        }
+        .separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: #555;
+        }
+        .separator::before,
+        .separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #ddd;
+        }
+        .g-recaptcha {
+            margin: 20px 0;
+            transform: scale(0.85);
+            transform-origin: center;
+        }
+        .btn-success {
+            font-size: 1.2rem;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Menu -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">LOGO</a>
+            <div class="input-group">
+                {% if user.is_authenticated %}
+                    <h4 class="me-2">Olá, {{ user.username }}!</h4>
+                    <form action="{% url 'bocaboca_profile:logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary rounded-pill">Sair</button>
+                    </form>
+                {% else %}
+                    <h4 class="me-2">Já tem uma conta no Boca-Boca?</h4>
+                    <a href="{% url 'bocaboca:register' %}" class="btn btn-secondary rounded-pill">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <!-- Main content and form -->
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 form-section">
+                <h2 class="form-heading">Publique um Serviço</h2>
+                <form method="POST" action="{% url 'bocabocaApp:submit_service' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Escolha uma categoria:</label>
+                        <select class="form-select" id="category" name="category" required>
+                            <option value="pedreiro">Pedreiro</option>
+                            <option value="marceneiro">Marceneiro</option>
+                            <option value="eletricista">Eletricista</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="service_name" class="form-label">Dê um nome para o serviço:</label>
+                        <input type="text" class="form-control" id="service_name" name="service_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="service_description" class="form-label">Descreva o serviço a ser feito:</label>
+                        <textarea class="form-control" id="service_description" name="service_description" rows="4" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="attachment" class="form-label">Anexe um arquivo (opcional):</label>
+                        <input type="file" class="form-control" id="attachment" name="attachment">
+                    </div>
+                    <div class="mb-3">
+                        <label for="desired_skills" class="form-label">Habilidades desejadas (opcional):</label>
+                        <div class="row">
+                            <div class="col-md-4 form-check">
+                                <input class="form-check-input" type="checkbox" value="pedreiro" id="pedreiro" name="desired_skills">
+                                <label class="form-check-label" for="pedreiro">Pedreiro</label>
+                            </div>
+                            <div class="col-md-4 form-check">
+                                <input class="form-check-input" type="checkbox" value="marceneiro" id="marceneiro" name="desired_skills">
+                                <label class="form-check-label" for="marceneiro">Marceneiro</label>
+                            </div>
+                            <div class="col-md-4 form-check">
+                                <input class="form-check-input" type="checkbox" value="eletricista" id="eletricista" name="desired_skills">
+                                <label class="form-check-label" for="eletricista">Eletricista</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="experience_level" class="form-label">Nível de experiência desejado:</label>
+                        <div class="row">
+                            <div class="col-md-4 form-check">
+                                <input class="form-check-input" type="radio" name="experience_level" id="beginner" value="Iniciante" required>
+                                <label class="form-check-label" for="beginner">Iniciante - Para quem está começando</label>
+                            </div>
+                            <div class="col-md-4 form-check">
+                                <input class="form-check-input" type="radio" name="experience_level" id="intermediate" value="Intermediário" required>
+                                <label class="form-check-label" for="intermediate">Intermediário - Para quem já tem alguma experiência</label>
+                            </div>
+                            <div class="col-md-4 form-check">
+                                <input class="form-check-input" type="radio" name="experience_level" id="expert" value="Especialista" required>
+                                <label class="form-check-label" for="expert">Especialista - Para quem tem alta experiência</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="proposal_duration" class="form-label">Durante quantos dias você quer receber propostas?</label>
+                        <select class="form-select" id="proposal_duration" name="proposal_duration" required>
+                            <option value="3">3 dias</option>
+                            <option value="7">7 dias</option>
+                            <option value="15">15 dias</option>
+                            <option value="30">30 dias</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Visibilidade do serviço:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="public" id="public" name="visibility">
+                            <label class="form-check-label" for="public">Público</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="private" id="private" name="visibility">
+                            <label class="form-check-label" for="private">Privado</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Publicar Serviço</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-light py-5">
+        <div class="container px-4 px-lg-5">
+            <div class="d-flex justify-content-center">
+                <a href="https://x.com" class="text-muted mx-3" target="_blank">
+                    <i class="fab fa-x-twitter"></i>
+                </a>
+                <a href="https://instagram.com/whitelabelrobochat/" class="text-muted mx-3" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://api.whatsapp.com/send?phone=+5531998210115&text=Olá!" class="text-muted mx-3" target="_blank"> 
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="https://youtube.com/@whitelabel" class="text-muted mx-3" target="_blank">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://telegram.org" class="text-muted mx-3" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                </a>
+            </div>
+            <div class="small text-center text-muted mt-3">Copyright &copy; {% now "Y" %} - Boca a Boca</div>
+        </div>  
+    </footer>
+</body>
+</html>

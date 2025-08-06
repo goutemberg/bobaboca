@@ -131,29 +131,29 @@
         <div class="selection-box">
             <!-- Adicionando "Criar uma conta" centralizado -->
             <div class="create-account">Criar uma conta</div>
-            <form method="POST" onsubmit="event.preventDefault(); redirectToPage();">
-                {% csrf_token %}
-                <h5>Seja bem-vindo ao BocaBoca! Diga-nos o que você está procurando.</h5>
-                <!-- Opções: Contratar ou Trabalhar -->
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="role" id="contratar" value="contratar" required>
-                    <label class="form-check-label" for="contratar">
-                        <strong>Eu quero Contratar</strong><br>
-                        Publique a sua vaga e encontre freelancers incríveis.
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="role" id="trabalhar" value="trabalhar" required>
-                    <label class="form-check-label" for="trabalhar">
-                        <strong>Eu quero Trabalhar</strong><br>
-                        Encontre projetos, seja contratado e ganhe dinheiro.
-                    </label>
-                </div>
-                <button type="submit" class="btn btn-success btn-continue">Continuar</button>
-            </form>
+        <!-- Formulário de seleção de tipo de usuário -->
+<form method="POST" action="{% url 'bocaboca_profile:role_selection' %}">
+    {% csrf_token %}
+    <h5>Seja bem-vindo ao BocaBoca! Diga-nos o que você está procurando.</h5>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="role" id="contratar" value="contratar" required>
+        <label class="form-check-label" for="contratar">
+            <strong>Eu quero Contratar</strong><br>
+            Publique a sua vaga e encontre freelancers incríveis.
+        </label>
+    </div>   
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="role" id="trabalhar" value="trabalhar" required>
+        <label class="form-check-label" for="trabalhar">
+            <strong>Eu quero Trabalhar</strong><br>
+            Encontre projetos, seja contratado e ganhe dinheiro.
+        </label>
+    </div>           
+
+    <button type="submit" class="btn btn-success btn-continue">Continuar</button>
+</form>   
         </div>
     </header>
-
     <!-- Footer -->
     <footer class="bg-light py-3">
         <div class="container px-4 px-lg-5">

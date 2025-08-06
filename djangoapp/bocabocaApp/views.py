@@ -34,6 +34,17 @@ def register_view(request):
 
     return render(request, 'bocaboca/pages/register.html')
 
+def register_client_view(request):
+    """
+    View responsável por renderizar o template de registro.
+    """
+    if request.method == 'POST':
+        # Lógica para processar o formulário, se necessário
+        # Por exemplo: validação, criação de usuário, etc.
+        pass
+
+    return render(request, 'bocaboca/pages/register_client.html')
+
 def login(request):
     return render(request, 'bocaboca/pages/login.html')
 
@@ -79,4 +90,6 @@ def client(request):
 
 def service_provider(request):
     return render(request, 'bocaboca/pages/service_provider.html')
+
+
 
