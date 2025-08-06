@@ -11,16 +11,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script>
-        // Mock: Substituir com integrações reais para as APIs do Facebook e Google
-        function loginWithFacebook() {
-            alert('Login com Facebook iniciado. Aqui você chamaria a API do Facebook.');
-        }
-
-        function loginWithGoogle() {
-            alert('Login com Google iniciado. Aqui você chamaria a API do Google.');
-        }
-    </script>
     <style>
         /* Ajuste para alinhar título e botão de login */
         .navbar .input-group {
@@ -33,9 +23,18 @@
             margin-right: 10px;
             font-size: 1rem;
         }
-        .btn-secondary.rounded-pill {
-            border-radius: 50px; /* Borda arredondada */
-            padding: 10px 20px; /* Ajuste de espaço interno */
+        .btn-secondary {
+            border-radius: 50px !important; /* Garante arredondamento completo */
+            padding: 10px 20px; /* Ajusta o tamanho do botão */
+            font-size: 1rem; /* Ajusta o tamanho do texto */
+            text-align: center;
+            display: inline-block;
+            white-space: nowrap; /* Evita quebra de texto */
+            border: none; /* Remove bordas padrão */
+        }
+        .btn-secondary:hover {
+            background-color: #6c757d;
+            color: #fff;
         }
         .login-container {
             background: #fff;
@@ -46,18 +45,28 @@
             margin: 50px auto;
             text-align: center;
         }
-        .btn-facebook, .btn-google {
-            width: 48%;
-            height: 60px;
-            font-size: 1.5rem;
+        .login-container button {
+            margin-bottom: 10px;
+            width: 48%; /* Ajuste para botões lado a lado */
+            display: inline-block;
+            height: 60px; /* Aumenta a altura dos botões */
+            font-size: 1.5rem; /* Ajusta o tamanho do ícone */
         }
         .btn-google {
             background-color: #db4a39;
             color: white;
+            border: none;
+        }
+        .btn-google:hover {
+            background-color: #c23321;
         }
         .btn-facebook {
             background-color: #4267B2;
             color: white;
+            border: none;
+        }
+        .btn-facebook:hover {
+            background-color: #365899;
         }
         .separator {
             display: flex;
@@ -65,12 +74,19 @@
             text-align: center;
             margin: 20px 0;
             color: #555;
+            font-weight: bold;
         }
         .separator::before,
         .separator::after {
             content: '';
             flex: 1;
             border-bottom: 1px solid #ddd;
+        }
+        .separator:not(:empty)::before {
+            margin-right: .25em;
+        }
+        .separator:not(:empty)::after {
+            margin-left: .25em;
         }
         .g-recaptcha {
             margin: 20px 0;
@@ -89,51 +105,25 @@
         <div class="container">
             <a class="navbar-brand" href="#">LOGO</a>
             <div class="input-group">
-                <h4 class="me-2">Já tem uma conta no Boca-Boca?</h4>
-                <a href="{% url 'bocaboca:login' %}" class="btn btn-secondary rounded-pill">Login</a>
+                <h4 class="me-2">Ainda não tem conta?</h4>
+                <a href="{% url 'bocaboca:register' %}" class="btn btn-secondary">Cadastra-se</a>
             </div>
         </div>
     </nav>
 
     <!-- Header Section -->
     <header class="bg-primary text-white text-center d-flex flex-column justify-content-center align-items-center" style="height: 700px; margin-bottom: 0;">
-        <div class="login-container">
-            <form method="POST" action="{% url 'bocaboca_profile:send_activation_link' %}">
-                {% csrf_token %}
-                <h2>Cadastre-se</h2>
-                <div class="d-flex justify-content-between">
-                    <button class="btn btn-facebook" onclick="loginWithFacebook()">
-                        <i class="fab fa-facebook-f"></i>
-                    </button>
-                    <button class="btn btn-google" onclick="loginWithGoogle()">
-                        <i class="fab fa-google"></i>
-                    </button>
-                </div>
-                <div class="separator">ou</div>
-                <div class="form-group">
-                    <label for="full-name">Nome completo</label>
-                    <input type="text" id="full-name" name="full_name" class="form-control" placeholder="Nome completo">
-                </div>
-                <div class="form-group">
-                    <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="E-mail">
-                </div>
-                <div class="form-group">
-                    <label for="password">Senha</label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Senha">
-                </div>
-                <div class="form-group">
-                    <div class="g-recaptcha" data-sitekey="your-site-key"></div>
-                </div>
-                  <!-- Passar o valor de role da sessão -->
-                
-                <input type="hidden" name="role" value="{{ request.session.role }}">
-                <button class="btn btn-success w-100">Cadastrar</button>
-            </form>
+        <div class="sucess-email-container">
             
+            <h3 class="me-2">Acesse o seu email e clique no link de confirmação.</h3>
+            
+            <p>A sua conta foi criada! Agora você precisa verificar seu email. Clique no link de confirmação que foi enviado para: {{ email }}.</p>
+            
+            <p>Isso confirma que você é um ser humano real com um endereço de email legítimo.</p>
+            
+            <p>Se por algum motivo não conseguir ativar a sua conta, fale com a nossa equipe: suporte@bocaboca.com.br.</p>
         </div>
     </header>
-
     <!-- Footer -->
     <footer class="bg-light py-5">
         <div class="container px-4 px-lg-5">
