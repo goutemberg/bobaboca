@@ -98,6 +98,14 @@
     <!-- Header Section -->
     <header class="bg-primary text-white text-center d-flex flex-column justify-content-center align-items-center" style="height: 700px; margin-bottom: 0;">
         <div class="login-container">
+            <ul class="nav nav-tabs mb-3" id="cadastroTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="email-tab" data-bs-toggle="tab" data-bs-target="#email" type="button" role="tab">E-mail</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="telefone-tab" data-bs-toggle="tab" data-bs-target="#telefone" type="button" role="tab">Telefone</button>
+  </li>
+</ul>
             <form method="POST" action="{% url 'bocaboca_profile:send_activation_link' %}">
                 {% csrf_token %}
                 <h2>Cadastre-se</h2>
