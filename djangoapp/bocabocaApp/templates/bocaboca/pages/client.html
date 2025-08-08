@@ -9,34 +9,8 @@
     <link rel="shortcut icon" href="{{ bocaboca_setup.favicon.url }}" type="image/png">
     {% endif %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script>
-        // Mock: Substituir com integrações reais para as APIs do Facebook e Google
-        function loginWithFacebook() {
-            alert('Login com Facebook iniciado. Aqui você chamaria a API do Facebook.');
-        }
-
-        function loginWithGoogle() {
-            alert('Login com Google iniciado. Aqui você chamaria a API do Google.');
-        }
-    </script>
     <style>
-        /* Ajuste para alinhar título e botão de login */
-        .navbar .input-group {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
-        .navbar h4 {
-            margin: 0;
-            margin-right: 10px;
-            font-size: 1rem;
-        }
-        .btn-secondary.rounded-pill {
-            border-radius: 50px; /* Borda arredondada */
-            padding: 10px 20px; /* Ajuste de espaço interno */
-        }
         .login-container {
             background: #fff;
             padding: 40px;
@@ -46,124 +20,236 @@
             margin: 50px auto;
             text-align: center;
         }
-        .btn-facebook, .btn-google {
-            width: 48%;
-            height: 60px;
-            font-size: 1.5rem;
-        }
-        .btn-google {
-            background-color: #db4a39;
-            color: white;
-        }
-        .btn-facebook {
-            background-color: #4267B2;
-            color: white;
-        }
-        .separator {
+        .tab-toggle {
             display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 20px 0;
-            color: #555;
+            justify-content: center;
+            margin-bottom: 20px;
         }
-        .separator::before,
-        .separator::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid #ddd;
-        }
-        .g-recaptcha {
-            margin: 20px 0;
-            transform: scale(0.85);
-            transform-origin: center;
-        }
-        .btn-success {
-            font-size: 1.2rem;
-            height: 50px;
-        }
+        .tab-toggle button { width: 50%; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
-    <!-- Top Menu -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">LOGO</a>
-            <div class="input-group">
-                <h4 class="me-2">Já tem uma conta no Boca-Boca?</h4>
-                <a href="{% url 'bocaboca:login' %}" class="btn btn-secondary rounded-pill">Login</a>
-            </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">LOGO</a>
+        <div class="input-group">
+            <h4 class="me-2">Já tem uma conta?</h4>
+            <a href="{% url 'bocaboca:login' %}" class="btn btn-secondary rounded-pill">Login</a>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <!-- Header Section -->
-    <header class="bg-primary text-white text-center d-flex flex-column justify-content-center align-items-center" style="height: 700px; margin-bottom: 0;">
-        <div class="login-container">
-            <ul class="nav nav-tabs mb-3" id="cadastroTab" role="tablist">
-  <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="email-tab" data-bs-toggle="tab" data-bs-target="#email" type="button" role="tab">E-mail</button>
-  </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="telefone-tab" data-bs-toggle="tab" data-bs-target="#telefone" type="button" role="tab">Telefone</button>
-  </li>
-</ul>
-            <form method="POST" action="{% url 'bocaboca_profile:send_activation_link' %}">
-                {% csrf_token %}
-                <h2>Cadastre-se</h2>
-                <div class="d-flex justify-content-between">
-                    <button class="btn btn-facebook" onclick="loginWithFacebook()">
-                        <i class="fab fa-facebook-f"></i>
-                    </button>
-                    <button class="btn btn-google" onclick="loginWithGoogle()">
-                        <i class="fab fa-google"></i>
-                    </button>
-                </div>
-                <div class="separator">ou</div>
-                <div class="form-group">
-                    <label for="full-name">Nome completo</label>
-                    <input type="text" id="full-name" name="full_name" class="form-control" placeholder="Nome completo">
-                </div>
-                <div class="form-group">
-                    <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="E-mail">
-                </div>
-                <div class="form-group">
-                    <label for="password">Senha</label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Senha">
-                </div>
-                <div class="form-group">
-                    <div class="g-recaptcha" data-sitekey="your-site-key"></div>
-                </div>
-                  <!-- Passar o valor de role da sessão -->
-                
-                <input type="hidden" name="role" value="{{ request.session.role }}">
-                <button class="btn btn-success w-100">Cadastrar</button>
-            </form>
-            
+<header class="bg-primary text-white text-center d-flex flex-column justify-content-center align-items-center" style="min-height: 700px;">
+    <div class="login-container">
+        <h2>Cadastre-se</h2>
+
+        <!-- Abas -->
+        <div class="tab-toggle btn-group" role="group">
+            <button type="button" class="btn btn-outline-primary active" id="emailTab">E-mail</button>
+            <button type="button" class="btn btn-outline-primary" id="phoneTab">Telefone</button>
         </div>
-    </header>
 
-    <!-- Footer -->
-    <footer class="bg-light py-5">
-        <div class="container px-4 px-lg-5">
-            <div class="d-flex justify-content-center">
-                <a href="https://x.com" class="text-muted mx-3" target="_blank">
-                    <i class="fab fa-x-twitter"></i>
-                </a>
-                <a href="https://instagram.com/whitelabelrobochat/" class="text-muted mx-3" target="_blank">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="https://api.whatsapp.com/send?phone=+5531998210115&text=Olá!" class="text-muted mx-3" target="_blank"> 
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-                <a href="https://youtube.com/@whitelabel" class="text-muted mx-3" target="_blank">
-                    <i class="fab fa-youtube"></i>
-                </a>
-                <a href="https://telegram.org" class="text-muted mx-3" target="_blank">
-                    <i class="fab fa-telegram"></i>
-                </a>
+        <!-- ====== FORM: E-mail (mantido) ====== -->
+        <form method="POST" action="{% url 'bocaboca_profile:send_activation_link' %}" id="emailForm">
+            {% csrf_token %}
+            <div class="form-group mb-2">
+                <label for="full-name">Nome completo</label>
+                <input type="text" id="full-name" name="full_name" class="form-control" placeholder="Nome completo">
             </div>
-            <div class="small text-center text-muted mt-3">Copyright &copy; {% now "Y" %} - Boca a Boca</div>
-        </div>  
-    </footer>
+            <div class="form-group mb-2">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="E-mail">
+            </div>
+            <div class="form-group mb-2">
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Senha">
+            </div>
+            <input type="hidden" name="role" value="{{ request.session.role }}">
+            <div class="g-recaptcha mb-3" data-sitekey="your-site-key"></div>
+            <button class="btn btn-success w-100">Cadastrar com E-mail</button>
+        </form>
+
+        <!-- ====== FORM: Telefone (enviar código) ====== -->
+        <form method="POST" action="{% url 'bocaboca_profile:send_sms_code' %}" id="sendCodeForm" class="hidden">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="phone">Telefone</label>
+                <input type="text" id="phone" name="phone" class="form-control" placeholder="(99) 99999-9999">
+            </div>
+
+            <!-- Feedback -->
+            <div id="smsAlert" class="alert d-none" role="alert"></div>
+
+            <div class="d-grid">
+                <button type="submit" id="sendCodeBtn" class="btn btn-warning w-100">
+                    Enviar Código
+                </button>
+                <small id="countdownHint" class="text-light mt-2 d-none">
+                    Reenvio habilitado em <span id="countdown">60</span>s
+                </small>
+            </div>
+        </form>
+
+        <!-- ====== FORM: Telefone (validar código) ====== -->
+        <form method="POST" action="{% url 'bocaboca_profile:validate_sms_code' %}" id="codeForm" class="hidden">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="sms_code">Código de Verificação</label>
+                <input type="text" id="sms_code" name="sms_code" class="form-control" placeholder="123456">
+            </div>
+            <div class="d-grid">
+                <button type="submit" id="validateBtn" class="btn btn-success w-100">
+                    Validar Código
+                </button>
+            </div>
+        </form>
+    </div>
+</header>
+
+<script>
+    // ===== Helpers =====
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return decodeURIComponent(parts.pop().split(";").shift());
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    function showAlert(el, type, msg) {
+        el.className = `alert alert-${type}`;
+        el.textContent = msg;
+        el.classList.remove('d-none');
+    }
+    function hideAlert(el) { el.classList.add('d-none'); }
+
+    // ===== Refs =====
+    const emailTab = document.getElementById('emailTab');
+    const phoneTab = document.getElementById('phoneTab');
+    const emailForm = document.getElementById('emailForm');
+    const sendCodeForm = document.getElementById('sendCodeForm');
+    const codeForm = document.getElementById('codeForm');
+
+    const smsAlert = document.getElementById('smsAlert');
+    const sendCodeBtn = document.getElementById('sendCodeBtn');
+    const phoneInput = document.getElementById('phone');
+    const countdownEl = document.getElementById('countdown');
+    const countdownHint = document.getElementById('countdownHint');
+    const smsCodeInput = document.getElementById('sms_code');
+
+    let countdownTimer = null;
+    const RESEND_SECONDS = 60;
+
+    function startCountdown() {
+        let remaining = RESEND_SECONDS;
+        countdownEl.textContent = remaining;
+        countdownHint.classList.remove('d-none');
+        sendCodeBtn.disabled = true;
+        const originalText = sendCodeBtn.textContent;
+        sendCodeBtn.textContent = 'Código enviado';
+
+        countdownTimer = setInterval(() => {
+            remaining -= 1;
+            countdownEl.textContent = remaining;
+            if (remaining <= 0) {
+                clearInterval(countdownTimer);
+                countdownTimer = null;
+                countdownHint.classList.add('d-none');
+                sendCodeBtn.disabled = false;
+                sendCodeBtn.textContent = 'Reenviar Código';
+            }
+        }, 1000);
+    }
+
+    // ===== Tabs =====
+    emailTab.addEventListener('click', () => {
+        emailTab.classList.add('active');
+        phoneTab.classList.remove('active');
+        emailForm.classList.remove('hidden');
+        sendCodeForm.classList.add('hidden');
+        codeForm.classList.add('hidden');
+        hideAlert(smsAlert);
+    });
+
+    phoneTab.addEventListener('click', () => {
+        phoneTab.classList.add('active');
+        emailTab.classList.remove('active');
+        emailForm.classList.add('hidden');
+        sendCodeForm.classList.remove('hidden');
+        // codeForm fica escondido até enviar código
+        hideAlert(smsAlert);
+    });
+
+    // ===== Enviar Código (AJAX) =====
+    sendCodeForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideAlert(smsAlert);
+
+        const phone = phoneInput.value.trim();
+        if (!phone) {
+            showAlert(smsAlert, 'warning', 'Informe um telefone válido.');
+            return;
+        }
+
+        try {
+            const resp = await fetch(sendCodeForm.action, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': csrftoken },
+                body: new FormData(sendCodeForm)
+            });
+
+            const data = await resp.json();
+            if (!resp.ok || !data.ok) {
+                showAlert(smsAlert, 'danger', data.message || 'Falha ao enviar código. Tente novamente.');
+                return;
+            }
+
+            // Sucesso: mostra form de código, inicia contador
+            showAlert(smsAlert, 'success', data.message || 'Código enviado! (Veja o terminal para o código fake)');
+            codeForm.classList.remove('hidden');
+            startCountdown();
+
+        } catch (err) {
+            console.error(err);
+            showAlert(smsAlert, 'danger', 'Erro inesperado ao enviar o código.');
+        }
+    });
+
+    // ===== Validar Código (AJAX) =====
+    codeForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideAlert(smsAlert);
+
+        const code = smsCodeInput.value.trim();
+        if (!code) {
+            showAlert(smsAlert, 'warning', 'Digite o código recebido por SMS.');
+            return;
+        }
+
+        try {
+            const resp = await fetch(codeForm.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ sms_code: code })
+            });
+
+            const data = await resp.json();
+            if (!resp.ok || !data.ok) {
+                showAlert(smsAlert, 'danger', data.message || 'Código inválido. Tente novamente.');
+                return;
+            }
+
+            // Redireciona para a finalização de cadastro (mesma página usada após e-mail, se preferir)
+            window.location.href = data.next_url;
+
+        } catch (err) {
+            console.error(err);
+            showAlert(smsAlert, 'danger', 'Erro inesperado ao validar o código.');
+        }
+    });
+</script>
 </body>
 </html>

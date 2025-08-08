@@ -6,6 +6,10 @@ from django.forms import ValidationError
 from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
+from django.db.models import Q
+
+phone_validator = RegexValidator(r'^\+?\d{10,15}$', 'Telefone inválido.')
 
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='addresses', verbose_name='Usuário')
@@ -53,8 +57,14 @@ class Address(models.Model):
     def __str__(self):
         return f"{self.street}, {self.number}, {self.city} - {self.state}"
 
-class NewUser(models.Model):  # Renomeado para NewUser
+class NewUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='new_user_profile')
+    phone = models.CharField(
+        max_length=16,
+        unique=True,
+        validators=[phone_validator],
+        db_index=True
+    )
     name = models.CharField(max_length=100)
     nickname = models.CharField(max_length=100)
     professional_title = models.CharField(max_length=100)
@@ -135,27 +145,9 @@ class AddressUser(models.Model):
     def __str__(self):
         return f"{self.street}, {self.number}, {self.city} - {self.state}"
 
-
-# class Profile(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Usuário')
-#     birth = models.DateField(null=True, blank=True)
-#     age = models.IntegerField(null=True, blank=True)
-#     cpf = models.CharField(max_length=11, unique=False)
-
-#     def __str__(self):
-#         return f"{self.user.username} - {self.cpf}"
-
-#     class Meta:
-#         verbose_name = 'Profile'
-#         verbose_name_plural = 'Profiles'
-
-
-class CustomUser(AbstractUser):  # CustomUser herda de AbstractUser
-    # Aqui você pode adicionar campos adicionais ao modelo de usuário
+class CustomUser(AbstractUser):  
     phone = models.CharField(max_length=15, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
-
-    # Definir related_name para evitar conflitos com o modelo User
     groups = models.ManyToManyField(
         'auth.Group', related_name='customuser_set', blank=True
     )
