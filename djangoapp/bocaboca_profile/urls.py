@@ -19,4 +19,14 @@ urlpatterns = [
     path('new_user/edit/<str:username>/', views.edit_new_user, name='edit_new_user'),
     path('new_client/edit/<str:username>/', views.edit_new_client, name='edit_new_client'),
     path('handle_profile_submission/', views.handle_profile_submission, name='handle_profile_submission'),
+
+
+    path("send_sms_code/", views.send_sms_code, name="send_sms_code"),
+    path("validate_sms_code/", views.validate_sms_code, name="validate_sms_code"),
+    path("finalizar_cadastro_telefone/", views.finalizar_cadastro_telefone, name="finalizar_cadastro_telefone"),
+
+    path("password_login/", views.password_login, name="password_login"),
+    path("login_send_code/", views.login_send_code, name="login_send_code"),
+    path("login_validate_code/", views.login_validate_code, name="login_validate_code"),
+
 ]
