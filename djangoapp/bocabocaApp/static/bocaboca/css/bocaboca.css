@@ -1,0 +1,171 @@
+/* =========================================================
+   BocaBoca — Clean White + Amber + Blue
+   ========================================================= */
+
+/* Fonte */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* Paleta */
+:root{
+  /* Amber (CTA) */
+  --amber-700:#FF6B00;   /* hover */
+  --amber-600:#FF7F32;   /* principal (suavizado) */
+  --amber-300:#FFE0C7;   /* realce leve */
+  --amber-100:#FFF6EF;
+
+  /* Blue (confiança) */
+  --blue-800:#0A2342;    /* navy para títulos/acentos */
+  --blue-700:#0048BA;    /* botões/links secundários */
+  --blue-100:#F2F6FF;
+
+  /* Neutros */
+  --ink-900:#111827;     /* títulos */
+  --ink-700:#334155;     /* texto */
+  --ink-600:#4B5563;     /* texto secundário */
+  --line:#EEF0F4;        /* bordas claras */
+  --bg:#FFFFFF;
+  --bg-muted:#F7F7F9;
+
+  --radius:16px;
+  --radius-sm:12px;
+  --shadow-sm:0 8px 20px rgba(17,24,39,.08);
+  --shadow-md:0 14px 30px rgba(17,24,39,.12);
+}
+
+html,body{height:100%}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color:var(--ink-900);
+  background:var(--bg);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* =========================================================
+   NAVBAR (branca, limpa)
+   ========================================================= */
+.auth-page .navbar{
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  box-shadow:none;
+}
+.auth-page .navbar .navbar-brand{ color:var(--ink-900)!important; font-weight:800; letter-spacing:.2px; }
+.auth-page .navbar .nav-link{ color:#415167!important; font-weight:600; }
+.auth-page .navbar .nav-link:hover{ color:var(--ink-900)!important; }
+
+/* seu HTML traz "text-white-50" no span; forçamos um cinza adequado em páginas de auth */
+.auth-page .navbar .text-white-50{ color:#6B7280!important; }
+
+/* Botão da navbar no novo estilo (outline azul) */
+.auth-page .btn-ghost{
+  background:#fff; color:var(--blue-700); border:1px solid var(--blue-700);
+  padding:8px 14px; border-radius:12px; font-weight:700; transition:.2s ease;
+}
+.auth-page .btn-ghost:hover{ background:var(--blue-700); color:#fff; transform:translateY(-1px); }
+
+/* =========================================================
+   HERO DE AUTENTICAÇÃO
+   ========================================================= */
+.auth-hero{
+  display:flex; align-items:flex-start; justify-content:center;
+  padding:56px 16px 72px; min-height:700px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-muted) 85%);
+}
+.auth-hero .auth-card{
+  width:100%; max-width:720px; margin:0 auto;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:32px 28px;
+  box-shadow:var(--shadow-sm);
+}
+.auth-title{
+  font-weight:800; letter-spacing:-.02em;
+  color:var(--blue-800);
+  font-size:clamp(1.9rem, 2.4vw, 2.25rem);
+  margin-bottom:6px;
+}
+.auth-sub{ color:var(--ink-600); margin-bottom:18px; }
+
+/* =========================================================
+   TABS (E-mail / Telefone)
+   ========================================================= */
+.tab-toggle{
+  display:flex; gap:10px; margin-bottom:18px;
+}
+.tab-toggle .btn{
+  flex:1 1 0;
+  border-radius:12px;
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--ink-700);
+  font-weight:700;
+  padding:10px 12px;
+  box-shadow:0 2px 8px rgba(17,24,39,.06);
+  transition:.15s ease;
+}
+.tab-toggle .btn:hover{ transform:translateY(-1px); }
+.tab-toggle .btn.active{
+  background: linear-gradient(135deg, var(--amber-600), var(--amber-700));
+  color:#fff; border-color:transparent;
+  box-shadow:0 10px 20px rgba(255,123,50,.18);
+}
+
+/* =========================================================
+   FORMULÁRIOS
+   ========================================================= */
+.form-label{
+  font-weight:700; color:var(--ink-700);
+  margin-bottom:8px; padding-left:4px;
+}
+.form-control{
+  border-radius:12px;
+  border:1px solid var(--line);
+  padding:12px 14px; font-size:1rem;
+}
+.form-control::placeholder{ color:#9AA4B2; }
+.form-control:focus{
+  border-color:var(--amber-600);
+  box-shadow:0 0 0 .25rem rgba(255,127,50,.18);
+}
+
+/* Botão principal (ÂMBAR) */
+.btn-brand{
+  height:48px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg, var(--amber-600), var(--amber-700));
+  color:#fff;
+  font-weight:800; letter-spacing:.2px;
+  box-shadow:0 12px 22px rgba(255,123,50,.20);
+  transition:transform .12s ease, box-shadow .2s ease, filter .2s ease;
+}
+.btn-brand:hover{
+  filter:brightness(.98);
+  transform:translateY(-1px);
+  box-shadow:0 16px 28px rgba(255,123,50,.24);
+}
+
+/* Alertas dentro do card */
+.auth-card .alert{
+  border:none; border-radius:12px; font-size:.95rem;
+}
+.auth-card .alert-success{ background:#E8F9F0; color:#176B4D; }
+.auth-card .alert-danger { background:#FDE8E8; color:#7F1D1D; }
+.auth-card .alert-warning{ background:#FFF6E6; color:#7A4B22; }
+
+/* =========================================================
+   UTILITÁRIOS
+   ========================================================= */
+.text-muted-ink{ color:var(--ink-600)!important; }
+.card-lite{ background:#fff; border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow-sm); }
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+@media (max-width:576px){
+  .auth-hero .auth-card{ padding:24px; border-radius:14px; }
+  .auth-title{ font-size:1.65rem; }
+}

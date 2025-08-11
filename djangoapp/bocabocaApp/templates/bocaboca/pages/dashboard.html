@@ -2,151 +2,186 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard do Freelancer</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        .main-section {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-        }
-        .header {
-            color: #007bff;
-            margin-bottom: 20px;
-        }
-        .box {
-            border: 1px solid #dee2e6;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-        .box h4 {
-            font-size: 1.5rem;
-            color: #333;
-        }
-        .box p {
-            font-size: 1rem;
-            color: #666;
-        }
-        .box a {
-            text-decoration: none;
-        }
-        .btn-custom {
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
-        }
-        .info-bar {
-            background-color: #eee;
-            padding: 10px 20px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .info-bar div {
-            text-align: center;
-        }
-        .info-bar div p {
-            font-size: 1.2rem;
-            color: #333;
-        }
-        .footer {
-            background-color: #f8f9fa;
-            text-align: center;
-            padding: 20px;
-            font-size: 0.8rem;
-            color: #777;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | BocaBoca</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="{% static 'css/bocaboca.css' %}" rel="stylesheet">
 </head>
 <body>
-    <!-- Top navigation bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">LOGO</a>
-            <div class="navbar-nav">
-                <a class="nav-link active" aria-current="page" href="#">Página Inicial</a>
-                <a class="nav-link" href="#">Projetos</a>
-                <a class="nav-link" href="#">Freelancers</a>
-                <a class="nav-link" href="#">Perfil</a>
-                <a class="nav-link" href="#">Conta</a>
-            </div>
-            <div class="d-flex align-items-center">
-                {% if user.is_authenticated %}
-                    <h4 class="me-2">Olá, {{ user.username }}!</h4>
-                    <form action="{% url 'bocaboca_profile:logout' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-secondary rounded-pill">Sair</button>
-                    </form>
-                {% endif %}
-            </div>
-        </div>
-    </nav>
 
-    {% if user.is_authenticated %}
-        <!-- Main content -->
-        <div class="container my-5">
-            <div class="row">
-                <!-- Earnings Box -->
-                <div class="col-md-4">
-                    <div class="box">
-                        <h4>R$ 0,00</h4>
-                        <p>Seus ganhos</p>
-                    </div>
-                    <div class="box">
-                        <h4>0</h4>
-                        <p>Propostas enviadas</p>
-                    </div>
-                    <div class="box">
-                        <h4>0</h4>
-                        <p>Propostas aceitas</p>
-                    </div>
-                    <div the="box">
-                        <h4>1</h4>
-                        <p>Views no perfil</p>
-                    </div>
-                </div>
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+      <img src="{% static 'brand/logo.png' %}" alt="logo" height="28" class="rounded-circle">
+      <span class="fw-semibold">BocaBoca</span>
+    </a>
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="nav" class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-3 me-auto">
+        <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Projetos</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Profissionais</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Mensagens</a></li>
+      </ul>
 
-                <!-- Profile and Proposals Info -->
-                <div class="col-md-8">
-                    <div class="main-section">
-                        <h2 class="header">Meu Perfil</h2>
-                        <p>Nome: <strong>Goutemberg Pessoa Da Silva</strong></p>
-                        <p>Perfil preenchido (0%)</p>
-                        <a href="#" class="btn-custom">Editar Perfil</a>
-                    </div>
-                    <div class="main-section">
-                        <h2 class="header">Meus Projetos</h2>
-                        <p>Nenhum projeto foi encontrado.</p>
-                        <a href="#" class="btn-custom">Buscar Projetos</a>
-                    </div>
-                    <div class="main-section">
-                        <h2 class="header">Minhas Propostas</h2>
-                        <p>Nenhuma proposta foi encontrada.</p>
-                        <a href="#" class="btn-custom">Buscar Projetos</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% else %}
-        <!-- Redirect to login page or show message -->
-        <div class="container my-5">
-            <div class="alert alert-info" role="alert">
-                Please <a href="{% url 'bocaboca:login' %}" class="alert-link">log in</a> to view the dashboard.
-            </div>
-        </div>
-    {% endif %}
-
-    <!-- Footer -->
-    <div class="footer">
-        <p>© 2025 Todos os direitos reservados</p>
+      {% if user.is_authenticated %}
+      <div class="d-flex align-items-center gap-3">
+        <span class="badge rounded-pill text-bg-light px-3 py-2"><i class="bi bi-person-circle me-1"></i>{{ user.first_name|default:user.username }}</span>
+        <form action="{% url 'bocaboca_profile:logout' %}" method="post" class="m-0">
+          {% csrf_token %}
+          <button class="btn btn-ghost">Sair</button>
+        </form>
+      </div>
+      {% endif %}
     </div>
+  </div>
+</nav>
+
+{% if user.is_authenticated %}
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero d-flex align-items-center justify-content-between gap-3">
+    <div class="d-flex align-items-center gap-3">
+      <div class="avatar">
+        <img src="{% static 'brand/logo.png' %}" alt="avatar" class="w-100 h-100 object-fit-cover">
+      </div>
+      <div>
+    <h1>Bem-vindo, {{ display_name }}!</h1>
+    <div class="sub">Gerencie seus projetos, propostas e perfil num só lugar.</div>
+</div>
+    </div>
+    <div class="text-end">
+      <a href="#" class="btn btn-brand"><i class="bi bi-search me-1"></i> Buscar Projetos</a>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="row g-3 mt-3">
+    <div class="col-12 col-sm-6 col-lg-3">
+      <div class="card-lite metric">
+        <div class="ico"><i class="bi bi-cash-stack"></i></div>
+        <div>
+          <div class="kpi">R$ {{ kpis.earnings|default:0|floatformat:2 }}</div>
+          <p class="lbl">Seus ganhos</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <div class="card-lite metric">
+        <div class="ico"><i class="bi bi-send"></i></div>
+        <div>
+          <div class="kpi">{{ kpis.sent_proposals|default:0 }}</div>
+          <p class="lbl">Propostas enviadas</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <div class="card-lite metric">
+        <div class="ico"><i class="bi bi-hand-thumbs-up"></i></div>
+        <div>
+          <div class="kpi">{{ kpis.accepted_proposals|default:0 }}</div>
+          <p class="lbl">Propostas aceitas</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <div class="card-lite metric">
+        <div class="ico"><i class="bi bi-eye"></i></div>
+        <div>
+          <div class="kpi">{{ kpis.profile_views|default:0 }}</div>
+          <p class="lbl">Views no perfil</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Colunas -->
+  <div class="row g-4 mt-1">
+    <!-- Esquerda -->
+    <div class="col-lg-6">
+      <div class="card-lite p-3">
+        <div class="section-title"><span class="dot"></span> Meu Perfil</div>
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="text-muted-ink">Nome</div>
+            <div class="fw-semibold">
+              {{ display_name }}
+            {{ profile.name|default:display_name }}
+            </div>
+          </div>
+          <a href="{% url 'bocaboca_profile:edit_new_user' user.username %}" class="btn btn-brand">
+            <i class="bi bi-pencil-square me-1"></i> Editar Perfil
+          </a>
+        </div>
+        <div class="mt-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <small class="text-muted-ink">Perfil preenchido</small>
+            <small class="fw-semibold text-success">{{ profile_completion }}%</small>
+          </div>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: {{ profile_completion }}%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-lite p-3 mt-3">
+        <div class="section-title"><span class="dot"></span> Minhas Propostas</div>
+        <div class="empty">
+          <i class="bi bi-inboxes me-2"></i> Nenhuma proposta encontrada no momento.
+        </div>
+        <div class="mt-3 d-flex gap-2">
+          <a href="#" class="btn btn-brand"><i class="bi bi-search me-1"></i> Buscar Projetos</a>
+          <a href="#" class="btn btn-ghost"><i class="bi bi-bookmark-plus me-1"></i> Salvar filtros</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Direita -->
+    <div class="col-lg-6">
+      <div class="card-lite p-3">
+        <div class="section-title"><span class="dot"></span> Meus Projetos</div>
+        <div class="empty">
+          <i class="bi bi-clipboard2-minus me-2"></i> Você ainda não tem projetos em andamento.
+        </div>
+        <div class="mt-3 d-flex gap-2">
+          <a href="#" class="btn btn-brand"><i class="bi bi-plus-circle me-1"></i> Criar Projeto</a>
+          <a href="#" class="btn btn-ghost"><i class="bi bi-list-check me-1"></i> Ver todos</a>
+        </div>
+      </div>
+
+      <div class="card-lite p-3 mt-3">
+        <div class="section-title"><span class="dot"></span> Atividade Recente</div>
+        <table class="table align-middle mb-0">
+          <thead>
+            <tr><th>Data</th><th>Evento</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>—</td><td>Nenhuma atividade recente</td><td><span class="badge text-bg-light">—</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-footer text-center">
+    © 2025 BocaBoca — todos os direitos reservados
+  </div>
+</div>
+{% else %}
+<div class="container py-5">
+  <div class="card-lite p-4 text-center">
+    <h5 class="mb-2">Faça login para acessar seu dashboard</h5>
+    <p class="text-muted-ink mb-3">Gerencie seus projetos e propostas em um só lugar.</p>
+    <a href="{% url 'bocaboca:login' %}" class="btn btn-brand">Entrar</a>
+  </div>
+</div>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
