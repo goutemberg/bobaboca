@@ -726,3 +726,36 @@ def login_validate_code(request):
     request.session.pop("login_phone", None)
 
     return JsonResponse({"ok": True, "next_url": "/dashboard/"}, status=200)
+
+@login_required
+def dashboard(request):
+    profile = NewUser.objects.filter(user=request.user).first()
+
+    # nome para exibição sem depender do template acessar a sessão
+    display_name = (
+        (profile.name if profile and profile.name else None)
+        or request.session.get('full_name')
+        or (request.user.first_name or '').strip()
+        or request.user.username
+    )
+
+    fields = [
+        ('name', 15), ('nickname', 10), ('professional_title', 15),
+        ('about', 20), ('professional_experience', 20),
+        ('interest_areas', 10), ('ability', 10),
+    ]
+    total = sum(w for _, w in fields)
+    score = 0
+    if profile:
+        for field, w in fields:
+            if (getattr(profile, field, '') or '').strip():
+                score += w
+    profile_completion = round((score / total) * 100) if total else 0
+
+    context = {
+        'profile': profile,
+        'display_name': display_name,
+        'profile_completion': profile_completion,
+        'kpis': {'earnings': 0, 'sent_proposals': 0, 'accepted_proposals': 0, 'profile_views': 1},
+    }
+    return render(request, 'bocaboca/pages/dashboard.html', context)
