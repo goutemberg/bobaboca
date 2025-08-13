@@ -27,7 +27,7 @@ SECRET_KEY = "#p43_gql#v9bnqldt8*nwh7-=vb_$brkzh($4jz#w$ko^l52-#"
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['https://powersolar.onrender.com/','powersolar.onrender.com','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['https://www.bobaboca.com.br','bobaboca.onrender.com','127.0.0.1','localhost']
 
 # Application definition
 
