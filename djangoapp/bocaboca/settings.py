@@ -75,21 +75,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bocaboca.wsgi.application'
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
 
 if DATABASE_URL:
     DATABASES = {
-        'default': dj_database_url.config(
+        "default": dj_database_url.config(
             default=DATABASE_URL,
             conn_max_age=600,
-            ssl_require=True
+            ssl_require=True,  # se seu Postgres exigir SSL no Render (normalmente sim)
         )
     }
 else:
+    # Fallback local/dev: SQLite em diretório gravável
+    SQLITE_PATH = BASE_DIR / "db.sqlite3"
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": str(SQLITE_PATH),
         }
     }
 
