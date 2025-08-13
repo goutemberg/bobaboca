@@ -2,65 +2,75 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{{ bocaboca_setup.title }}</title>
   {% if bocaboca_setup.favicon %}
-  <link rel="shortcut icon" href="{{ bocaboca_setup.favicon.url }}" type="image/png">
+    <link rel="shortcut icon" href="{{ bocaboca_setup.favicon.url }}" type="image/png" />
   {% endif %}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <style>
-    .login-container {
-      background:#fff; padding:40px; border-radius:8px;
-      box-shadow:0 4px 8px rgba(0,0,0,0.1); max-width:400px; margin:50px auto; text-align:center;
-    }
-    .tab-toggle { display:flex; justify-content:center; margin-bottom:20px; }
-    .tab-toggle button { width:50%; }
-    .hidden { display:none; }
-  </style>
+
+  <!-- Bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/tokens.css' %}?v=1">
+<link rel="stylesheet" href="{% static 'css/base.css' %}?v=1">
+<link rel="stylesheet" href="{% static 'css/components.css' %}?v=1">
+<link rel="stylesheet" href="{% static 'css/landing.css' %}?v=1">
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg landing-top">
   <div class="container">
-    <a class="navbar-brand" href="#">LOGO</a>
-    <div class="input-group">
-      <h4 class="me-2">Ainda não tem conta?</h4>
-      <a href="{% url 'bocaboca:register' %}" class="btn btn-secondary rounded-pill">Cadastre-se</a>
+   <a class="navbar-brand" href="{% url 'bocaboca:index' %}">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'bocaboca:index' %}">
+  <img src="{% static 'bocaboca/images/logo/logo.PNG' %}" alt="logo" class="rounded-circle">
+  <span style="color:var(--amber)">bocaboca</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="nav" class="collapse navbar-collapse">
+      <div class="ms-auto nav-cta">
+        <h4 class="me-1 mb-0">Ainda não tem conta?</h4>
+        <a href="{% url 'bocaboca:register' %}" class="btn btn-brand">Cadastre-se</a>
+      </div>
     </div>
   </div>
 </nav>
 
-<header class="bg-primary text-white text-center d-flex flex-column justify-content-center align-items-center" style="min-height: 700px;">
-  <div class="login-container">
+<!-- HERO + CARD -->
+<header class="auth-hero">
+  <div class="auth-card">
     <h2>Entrar</h2>
 
     <!-- Abas -->
-    <div class="tab-toggle btn-group" role="group">
-      <button type="button" class="btn btn-outline-primary active" id="emailTab">E-mail</button>
-      <button type="button" class="btn btn-outline-primary" id="phoneTab">Telefone</button>
+    <div class="tab-toggle btn-group" role="group" aria-label="Alternar método de login">
+      <button type="button" class="btn active" id="emailTab">E‑mail</button>
+      <button type="button" class="btn" id="phoneTab">Telefone</button>
     </div>
 
     <!-- ====== FORM: E-mail ====== -->
-    <form method="POST" action="{% url 'bocaboca_profile:password_login' %}" id="emailForm">
+    <form method="POST" action="{% url 'bocaboca_profile:password_login' %}" id="emailForm" novalidate>
       {% csrf_token %}
-      <div class="form-group mb-2 text-start">
-        <label for="login-email">E-mail</label>
+      <div class="mb-2">
+        <label for="login-email" class="form-label">E‑mail</label>
         <input type="email" id="login-email" name="identifier" class="form-control" placeholder="seu@email.com" required>
       </div>
-      <div class="form-group mb-2 text-start">
-        <label for="login-password">Senha</label>
-        <input type="password" id="login-password" name="password" class="form-control" placeholder="Senha" required>
+      <div class="mb-3">
+        <label for="login-password" class="form-label">Senha</label>
+        <input type="password" id="login-password" name="password" class="form-control" placeholder="••••••••" required>
       </div>
       <div class="g-recaptcha mb-3" data-sitekey="your-site-key"></div>
-      <button type="submit" class="btn btn-success w-100">Entrar</button>
+      <button type="submit" class="btn btn-brand w-100">Entrar</button>
     </form>
 
     <!-- ====== FORM: Telefone (enviar código) ====== -->
-    <form method="POST" action="{% url 'bocaboca_profile:login_send_code' %}" id="sendCodeForm" class="hidden">
+    <form method="POST" action="{% url 'bocaboca_profile:login_send_code' %}" id="sendCodeForm" class="hidden" novalidate>
       {% csrf_token %}
-      <div class="form-group mb-3 text-start">
-        <label for="login-phone">Telefone</label>
+      <div class="mb-3">
+        <label for="login-phone" class="form-label">Telefone</label>
         <input type="text" id="login-phone" name="phone" class="form-control" placeholder="(99) 99999-9999" required>
       </div>
 
@@ -68,31 +78,40 @@
       <div id="smsAlert" class="alert d-none" role="alert"></div>
 
       <div class="d-grid">
-        <button type="submit" id="sendCodeBtn" class="btn btn-warning w-100">
-          Enviar Código
-        </button>
-        <small id="countdownHint" class="text-light mt-2 d-none">
+        <button type="submit" id="sendCodeBtn" class="btn btn-brand w-100">Enviar Código</button>
+        <small id="countdownHint" class="text-muted mt-2 d-none">
           Reenvio habilitado em <span id="countdown">60</span>s
         </small>
       </div>
     </form>
 
     <!-- ====== FORM: Telefone (validar código) ====== -->
-    <form method="POST" action="{% url 'bocaboca_profile:login_validate_code' %}" id="codeForm" class="hidden">
+    <form method="POST" action="{% url 'bocaboca_profile:login_validate_code' %}" id="codeForm" class="hidden" novalidate>
       {% csrf_token %}
-      <div class="form-group mb-3 text-start">
-        <label for="login-sms-code">Código de Verificação</label>
-        <input type="text" id="login-sms-code" name="sms_code" class="form-control" placeholder="000000" required>
+      <div class="mb-3">
+        <label for="login-sms-code" class="form-label">Código de Verificação</label>
+        <input type="text" id="login-sms-code" name="sms_code" class="form-control" placeholder="000000" inputmode="numeric" minlength="4" maxlength="6" required>
       </div>
       <div class="d-grid">
-        <button type="submit" id="validateBtn" class="btn btn-success w-100">
-          Validar Código
-        </button>
+        <button type="submit" id="validateBtn" class="btn btn-brand w-100">Validar Código</button>
       </div>
     </form>
   </div>
 </header>
-
+  <!-- FOOTER -->
+  <footer class="landing-footer">
+    <div class="container px-4 px-lg-5">
+      <div class="d-flex justify-content-center">
+        <a href="https://x.com" class="text-muted mx-3" target="_blank"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/whitelabelrobochat/" class="text-muted mx-3" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://api.whatsapp.com/send?phone=+5531998210115&text=Olá!" class="text-muted mx-3" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://youtube.com/@whitelabel" class="text-muted mx-3" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://telegram.org" class="text-muted mx-3" target="_blank"><i class="fab fa-telegram"></i></a>
+      </div>
+      <div class="small text-center text-muted mt-3">Copyright &copy; {% now "Y" %} - Boca a Boca</div>
+    </div>
+  </footer>
+<!-- JS -->
 <script>
   // ===== Helpers =====
   function getCookie(name) {
@@ -190,7 +209,7 @@
         return;
       }
 
-      showAlert(smsAlert, 'success', data.message || 'Código enviado! (Veja o terminal para o código fake)');
+      showAlert(smsAlert, 'success', data.message || 'Código enviado!');
       codeForm.classList.remove('hidden');
       startCountdown();
 
@@ -227,7 +246,6 @@
         return;
       }
 
-      // Redireciona: view retorna next_url
       window.location.href = data.next_url || "/dashboard/";
 
     } catch (err) {
@@ -236,6 +254,7 @@
     }
   });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-

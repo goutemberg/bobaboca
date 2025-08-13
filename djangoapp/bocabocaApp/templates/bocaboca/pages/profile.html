@@ -2,122 +2,149 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Perfil</title>
-    {% if bocaboca_setup.favicon %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Perfil</title>
+  {% if bocaboca_setup.favicon %}
     <link rel="shortcut icon" href="{{ bocaboca_setup.favicon.url }}" type="image/png">
-    {% endif %}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        .form-section { background-color: #f8f9fa; padding: 40px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
-        .form-heading { color: #007bff; margin-bottom: 20px; }
-        .navbar .input-group { display: flex; justify-content: flex-end; align-items: center; }
-        .navbar h4 { margin: 0; margin-right: 10px; font-size: 1rem; }
-        .btn-secondary.rounded-pill { border-radius: 50px; padding: 10px 20px; }
-    </style>
+  {% endif %}
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}">
+  <!-- Design System -->
+  <link rel="stylesheet" href="{% static 'css/tokens.css' %}?v=1">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}?v=1">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}?v=1">
 </head>
 <body>
-    <!-- Top Menu -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">LOGO</a>
-            <div class="input-group">
-                {% if not telefone and user.is_authenticated %}
-                    <h4 class="me-2">Olá, {{ user.username }}!</h4>
-                    <form action="{% url 'bocaboca_profile:logout' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-secondary rounded-pill">Sair</button>
-                    </form>
-                {% else %}
-                    <h4 class="me-2">Já tem uma conta no Boca-Boca?</h4>
-                    <a href="{% url 'bocaboca:register' %}" class="btn btn-secondary rounded-pill">Login</a>
-                {% endif %}
-            </div>
+
+  <!-- Navbar padrão -->
+  <nav class="navbar navbar-expand-lg landing-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <img src="{% static 'bocaboca/images/logo/logo.PNG' %}" alt="logo" class="rounded-circle">
+        <span style="color:var(--amber)">bocaboca</span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div id="nav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-3">
+          <li class="nav-item"><a class="nav-link" href="#como-funciona">Como Funciona</a></li>
+          <li class="nav-item"><a class="nav-link" href="#encontre-profissional">Encontre um Profissional</a></li>
+          <li class="nav-item"><a class="nav-link" href="#quero-trabalhar">Quero Trabalhar</a></li>
+        </ul>
+
+        <div class="ms-auto d-flex gap-2">
+          {% if not telefone and user.is_authenticated %}
+            <span class="text-muted">Olá, {{ user.username }}!</span>
+            <form action="{% url 'bocaboca_profile:logout' %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-brand">Sair</button>
+            </form>
+          {% else %}
+            <a href="{% url 'bocaboca:register' %}" class="btn btn-outline-brand">Login</a>
+          {% endif %}
         </div>
-    </nav>
-
-    <!-- Formulário -->
-    <div class="container my-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8 form-section">
-                <h2 class="form-heading">Cadastro de Perfil</h2>
-                <form method="POST" action="{% url 'bocaboca_profile:handle_profile_submission' %}">
-                    {% csrf_token %}
-
-                    {# Mostra TELEFONE se for fluxo por telefone #}
-                    {% if telefone %}
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Telefone:</label>
-                        <input type="text" class="form-control" id="phone" name="phone" value="{{ telefone }}" readonly>
-                    </div>
-                    {% elif user.email or email %}
-                    {# Senão, mostra E-MAIL se existir (fluxo por e-mail) #}
-                    <div class="mb-3">
-                        <label for="email" class="form-label">E-mail:</label>
-                        <input type="email" class="form-control" id="email" name="email" value="{{ email|default:user.email }}" readonly>
-                    </div>
-                    {% endif %}
-
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Nome:</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ full_name|default:'' }}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nickname" class="form-label">Apelido:</label>
-                        <input type="text" class="form-control" id="nickname" name="nickname" value="{{ nickname|default:'' }}" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="professional_title" class="form-label">Título Profissional:</label>
-                        <input type="text" class="form-control" id="professional_title" name="professional_title" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="about" class="form-label">Sobre você:</label>
-                        <textarea class="form-control" id="about" name="about" rows="4" required></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="professional_experience" class="form-label">Experiência Profissional:</label>
-                        <textarea class="form-control" id="professional_experience" name="professional_experience" rows="4" required></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="interest_areas" class="form-label">Áreas de Interesse:</label>
-                        <div class="row">
-                            {% for area in interest_areas %}
-                                <div class="col-md-4 form-check">
-                                    <input class="form-check-input" type="checkbox" value="{{ area }}" id="{{ area }}" name="interest_areas">
-                                    <label class="form-check-label" for="{{ area }}">{{ area|capfirst }}</label>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="ability" class="form-label">Habilidades:</label>
-                        <textarea class="form-control" id="ability" name="ability" rows="4" required></textarea>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Registrar</button>
-                </form>
-            </div>
-        </div>
+      </div>
     </div>
+  </nav>
 
-    <!-- Footer -->
-    <footer class="bg-light py-5">
-        <div class="container px-4 px-lg-5">
-            <div class="d-flex justify-content-center">
-                <a href="https://x.com" class="text-muted mx-3" target="_blank"><i class="fab fa-x-twitter"></i></a>
-                <a href="https://instagram.com/whitelabelrobochat/" class="text-muted mx-3" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://api.whatsapp.com/send?phone=+5531998210115&text=Olá!" class="text-muted mx-3" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://youtube.com/@whitelabel" class="text-muted mx-3" target="_blank"><i class="fab fa-youtube"></i></a>
-                <a href="https://telegram.org" class="text-muted mx-3" target="_blank"><i class="fab fa-telegram"></i></a>
+  <!-- Conteúdo -->
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card-lite p-4">
+          <h3 class="mb-4">Cadastro de Perfil</h3>
+
+          <form method="POST" action="{% url 'bocaboca_profile:handle_profile_submission' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Foto do profissional -->
+            <div class="mb-3 text-center">
+              <label for="photo" class="form-label">Foto do Profissional</label>
+              <div class="professional-photo mb-2">
+                <img src="{% static 'bocaboca/images/placeholders/user-placeholder.png' %}" alt="Foto do profissional" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+              </div>
+              <input class="form-control" type="file" id="photo" name="photo" accept="image/*">
             </div>
-            <div class="small text-center text-muted mt-3">Copyright &copy; {% now "Y" %} - Boca a Boca</div>
+
+            {% if telefone %}
+              <div class="mb-3">
+                <label for="phone" class="form-label">Telefone</label>
+                <input type="text" class="form-control" id="phone" name="phone" value="{{ telefone }}" readonly>
+              </div>
+            {% elif user.email or email %}
+              <div class="mb-3">
+                <label for="email" class="form-label">E-mail</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ email|default:user.email }}" readonly>
+              </div>
+            {% endif %}
+
+            <div class="mb-3">
+              <label for="name" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="name" name="name" value="{{ full_name|default:'' }}" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="nickname" class="form-label">Apelido</label>
+              <input type="text" class="form-control" id="nickname" name="nickname" value="{{ nickname|default:'' }}" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="professional_title" class="form-label">Título Profissional</label>
+              <input type="text" class="form-control" id="professional_title" name="professional_title" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="about" class="form-label">Sobre você</label>
+              <textarea class="form-control" id="about" name="about" rows="4" required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="professional_experience" class="form-label">Experiência Profissional</label>
+              <textarea class="form-control" id="professional_experience" name="professional_experience" rows="4" required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Áreas de Interesse</label>
+              <div class="row">
+                {% for area in interest_areas %}
+                  <div class="col-md-4 form-check">
+                    <input class="form-check-input" type="checkbox" value="{{ area }}" id="{{ area }}" name="interest_areas">
+                    <label class="form-check-label" for="{{ area }}">{{ area|capfirst }}</label>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="ability" class="form-label">Habilidades</label>
+              <textarea class="form-control" id="ability" name="ability" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-brand w-100">Registrar</button>
+          </form>
         </div>
-    </footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer padrão -->
+  <footer class="landing-footer">
+    <div class="container px-4 px-lg-5">
+      <div class="d-flex justify-content-center">
+        <a href="https://x.com" class="text-muted mx-3" target="_blank"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/whitelabelrobochat/" class="text-muted mx-3" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://api.whatsapp.com/send?phone=+5531998210115&text=Olá!" class="text-muted mx-3" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://youtube.com/@whitelabel" class="text-muted mx-3" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://telegram.org" class="text-muted mx-3" target="_blank"><i class="fab fa-telegram"></i></a>
+      </div>
+      <div class="small text-center text-muted mt-3">Copyright &copy; {% now "Y" %} - Boca a Boca</div>
+    </div>
+  </footer>
+
+  <script src="{% static 'vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

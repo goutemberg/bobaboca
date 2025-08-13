@@ -61,9 +61,11 @@ class NewUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='new_user_profile')
     phone = models.CharField(
         max_length=16,
-        unique=True,
         validators=[phone_validator],
-        db_index=True
+        unique=True,          # mantém o unique
+        null=True,            # permite NULL
+        blank=True,           # permite vazio no form, mas vamos normalizar para None
+        db_index=True,
     )
     name = models.CharField(max_length=100)
     nickname = models.CharField(max_length=100)
@@ -73,8 +75,15 @@ class NewUser(models.Model):
     interest_areas = models.TextField(blank=True)
     ability = models.TextField()
 
+    def save(self, *args, **kwargs):
+        # normaliza: string vazia -> None (evita violar unique por '')
+        if self.phone == '':
+            self.phone = None
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.user.username
+
 
 class Review(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)

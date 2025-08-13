@@ -1,0 +1,158 @@
+/* ===== CLIENT SIGNUP (auth-page) ===== */
+
+/* Navbar clean */
+.auth-page .navbar{
+  background:#fff;
+  border-bottom:1px solid var(--line, #E9EDF5);
+  box-shadow:none;
+}
+.auth-page .navbar .navbar-brand{ color:var(--blue-900, #002D80)!important; font-weight:800; letter-spacing:.2px; }
+.auth-page .navbar .text-white-50{ color:#6B7280!important; }
+.auth-page .btn.btn-ghost{
+  background:#fff;
+  color:var(--blue-800, #003C8F);
+  border:1px solid var(--blue-800, #003C8F);
+  padding:8px 14px;
+  border-radius:8px;
+  font-weight:700;
+  transition:.2s ease;
+}
+.auth-page .btn.btn-ghost:hover{ background:var(--blue-800, #003C8F); color:#fff; transform:translateY(-1px); }
+
+/* Hero com véu âmbar + imagem */
+.auth-hero{
+  display:flex; align-items:flex-start; justify-content:center;
+  padding:56px 16px 72px;
+  min-height: 720px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,127,50,.72) 0%,
+      rgba(255,127,50,.58) 38%,
+      rgba(255,127,50,.70) 100%
+    ),
+    url("/static/bocaboca/images/home/home.jpg") center/cover no-repeat;
+}
+
+/* Card */
+.auth-card{
+  width:100%; max-width:720px; margin:0 auto;
+  background:#fff;
+  border:1px solid var(--line, #E9EDF5);
+  border-radius:12px;
+  padding:32px 28px;
+  box-shadow:0 8px 20px rgba(17,24,39,.08);
+}
+.auth-title{
+  font-weight:900; letter-spacing:-.02em;
+  color:var(--blue-900, #002D80);
+  font-size:clamp(1.9rem, 2.4vw, 2.25rem);
+  margin-bottom:6px;
+}
+.auth-sub{ color:#4B5563; margin-bottom:18px; }
+
+/* Tabs */
+.tab-toggle{
+  display:flex; gap:10px; margin-bottom:18px;
+}
+.tab-toggle .btn{
+  flex:1 1 0;
+  border-radius:8px;
+  background:#fff;
+  border:1px solid var(--line, #E9EDF5);
+  color:#334155;
+  font-weight:700;
+  padding:10px 12px;
+  box-shadow:0 2px 8px rgba(17,24,39,.06);
+  transition:.15s ease;
+}
+.tab-toggle .btn:hover{ transform:translateY(-1px); }
+.tab-toggle .btn.active{
+  background: linear-gradient(135deg, var(--amber, #ff7f32), #ff6b00);
+  color:#fff; border-color:transparent;
+  box-shadow:0 10px 20px rgba(255,123,50,.18);
+}
+
+/* Form */
+.form-label{
+  font-weight:700; color:#334155;
+  margin-bottom:8px; padding-left:4px;
+}
+.form-control{
+  border-radius:8px;
+  border:1px solid var(--line, #E9EDF5);
+  padding:12px 14px; font-size:1rem;
+}
+.form-control::placeholder{ color:#9AA4B2; }
+.form-control:focus{
+  border-color:var(--amber, #ff7f32);
+  box-shadow:0 0 0 .25rem rgba(255,127,50,.18);
+}
+
+/* CTA âmbar */
+.btn-brand{
+  height:48px;
+  border:none;
+  border-radius:8px;
+  background:linear-gradient(135deg, var(--amber, #ff7f32), #ff6b00);
+  color:#fff;
+  font-weight:800; letter-spacing:.2px;
+  box-shadow:0 12px 22px rgba(255,123,50,.20);
+  transition:transform .12s ease, box-shadow .2s ease, filter .2s ease;
+}
+.btn-brand:hover{
+  filter:brightness(.98);
+  transform:translateY(-1px);
+  box-shadow:0 16px 28px rgba(255,123,50,.24);
+}
+
+/* Alertas no card */
+.auth-card .alert{
+  border:none; border-radius:8px; font-size:.95rem;
+}
+.auth-card .alert-success{ background:#E8F9F0; color:#176B4D; }
+.auth-card .alert-danger { background:#FDE8E8; color:#7F1D1D; }
+.auth-card .alert-warning{ background:#FFF6E6; color:#7A4B22; }
+
+/* Utilitários */
+.text-muted-ink{ color:#4B5563!important; }
+.card-lite{ background:#fff; border:1px solid var(--line, #E9EDF5); border-radius:12px; box-shadow:0 8px 20px rgba(17,24,39,.08); }
+
+/* Responsivo */
+@media (max-width:576px){
+  .auth-hero .auth-card{ padding:24px; border-radius:10px; }
+  .auth-title{ font-size:1.65rem; }
+}
+/* ==== Ajuste de largura do card de criação de conta ==== */
+.auth-card{
+  width: 100%;
+  max-width: 520px;      /* desktop mais estreito */
+  padding: 24px;         /* um pouco menos de padding pra sentir menor */
+  border-radius: 12px;   /* combina com o resto do sistema */
+}
+
+@media (min-width: 992px){
+  .auth-card{ max-width: 440px; } /* um tiquinho a mais em telas grandes */
+}
+
+@media (max-width: 575.98px){
+  .auth-card{
+    max-width: 360px;    /* mobile médio */
+    padding: 20px;
+  }
+}
+
+/* abas não “esticarem” visualmente */
+.tab-toggle{
+  max-width: 100%;
+}
+.tab-toggle .btn{
+  min-width: 0;
+}
+
+/* título/sub mais compactos */
+.auth-title{ margin-bottom: 4px; }
+.auth-sub{ margin-bottom: 14px; }
+
+/* inputs com respiro menor pra reforçar sensação de card menor */
+.form-control{ padding: 10px 12px; }

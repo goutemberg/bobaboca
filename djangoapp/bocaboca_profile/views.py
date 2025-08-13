@@ -18,6 +18,7 @@ from django.contrib.auth.hashers import make_password
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.db import transaction, IntegrityError
+from django.utils.text import slugify
 
 
 def _is_json_request(request):
@@ -308,11 +309,12 @@ def edit_new_client(request, username):
 @csrf_exempt
 @require_http_methods(["POST"])
 @csrf_exempt
+@transaction.atomic
 def handle_profile_submission(request):
     if request.method != "POST":
         return HttpResponseBadRequest("Método inválido")
 
-    data = {}
+    # ----- entrada (POST ou JSON)
     if _is_json_request(request):
         try:
             import json
@@ -322,20 +324,28 @@ def handle_profile_submission(request):
     else:
         data = request.POST
 
+    # ----- campos
     name = (data.get("name") or "").strip()
     nickname = (data.get("nickname") or "").strip()
     professional_title = (data.get("professional_title") or "").strip()
     about = (data.get("about") or "").strip()
     professional_experience = (data.get("professional_experience") or "").strip()
+
     if hasattr(data, "getlist"):
         interest_areas = data.getlist("interest_areas")
     else:
         interest_areas = data.get("interest_areas") or []
         if isinstance(interest_areas, str):
             interest_areas = [x.strip() for x in interest_areas.split(",") if x.strip()]
+    interest_areas_str = ",".join(interest_areas)
+
     ability = (data.get("ability") or "").strip()
 
-    telefone = (data.get("phone") or data.get("telefone") or "").strip()
+    # telefone: aceita "phone" ou "telefone"; normaliza para dígitos; '' -> None
+    phone_raw = (data.get("phone") or data.get("telefone") or "").strip()
+    phone_digits = PHONE_CLEAN_RE.sub("", phone_raw)
+    phone = phone_digits or None
+
     username = (data.get("username") or "").strip()
 
     if not name or not nickname:
@@ -344,7 +354,7 @@ def handle_profile_submission(request):
             return JsonResponse({"error": msg}, status=400)
         return HttpResponseBadRequest(msg)
 
-    user = None
+    # ----- resolve usuário
     if username:
         user = get_object_or_404(User, username=username)
     elif request.user.is_authenticated:
@@ -354,15 +364,44 @@ def handle_profile_submission(request):
         username = f"{base}-{get_random_string(6)}"
         user = User.objects.create_user(username=username, first_name=name, is_active=True)
 
-    profile, _ = NewUser.objects.get_or_create(user=user)
-    profile.name = name or profile.name
-    profile.nickname = nickname or profile.nickname
-    profile.professional_title = professional_title or profile.professional_title
-    profile.about = about or profile.about
-    profile.professional_experience = professional_experience or profile.professional_experience
-    profile.interest_areas = ",".join(interest_areas) if interest_areas else profile.interest_areas
-    profile.ability = ability or profile.ability
-    profile.save()
+    # ----- cria/atualiza perfil sem gravar strings vazias
+    defaults = {
+        "phone": phone,  # None se não foi enviado
+        "name": name,
+        "nickname": nickname,
+        "professional_title": professional_title,
+        "about": about,
+        "professional_experience": professional_experience,
+        "interest_areas": interest_areas_str,
+        "ability": ability,
+    }
+
+    profile, created = NewUser.objects.get_or_create(user=user, defaults=defaults)
+
+    if not created:
+        # atualiza campos sempre
+        profile.name = name or profile.name
+        profile.nickname = nickname or profile.nickname
+        profile.professional_title = professional_title or profile.professional_title
+        profile.about = about or profile.about
+        profile.professional_experience = professional_experience or profile.professional_experience
+        if interest_areas_str:
+            profile.interest_areas = interest_areas_str
+        profile.ability = ability or profile.ability
+
+        # só mexe no phone se veio algo
+        if phone is not None:
+            profile.phone = phone
+
+        try:
+            # .save() no modelo já deve normalizar '' -> None (conforme ajuste no models.py)
+            profile.save()
+        except IntegrityError:
+            # telefone já usado por outro perfil
+            msg = "Este telefone já está em uso."
+            if _is_json_request(request):
+                return JsonResponse({"error": msg}, status=409)
+            return HttpResponseBadRequest(msg)
 
     if _is_json_request(request):
         return JsonResponse({"message": "Perfil salvo", "username": user.username}, status=200)

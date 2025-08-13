@@ -1,0 +1,122 @@
+/* =============== Base + Utils ================== */
+html, body { height: 100%; }
+* { box-sizing: border-box; }
+
+body{
+  margin: 0;
+  font-family: var(--font-ui);
+  color: var(--text-900);
+  background: var(--bg);
+}
+
+a { text-decoration: none; }
+a:hover { text-decoration: none; }
+
+.text-muted-ink{ color: var(--text-700) !important; }
+
+/* Ajuste padrão da navbar para não “crescer” com logo maior */
+.navbar{
+  --bs-navbar-padding-y: .5rem;
+}
+.navbar .navbar-brand{
+  font-weight: 800;
+  color: var(--blue-900) !important;
+  letter-spacing: .2px;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+.navbar .navbar-brand img{
+  height: 60px;           /* você pediu logo maior */
+  width: auto;
+  display: block;
+}
+.navbar .nav-link{
+  color: var(--blue-900);
+  font-weight: 600;
+  padding: .75rem .75rem;
+}
+.navbar .nav-link:hover{ color: var(--blue-800); }
+
+/* ========== BASE GLOBAL (aplicado a todos) ========== */
+*{ box-sizing:border-box }
+html,body{ height:100% }
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--text-900);
+  background:var(--bg);
+}
+
+/* Navbar branca fina */
+.navbar.landing-top{
+  background:#fff;
+  border-bottom:1px solid var(--line);
+}
+.navbar .navbar-brand{
+  font-weight:800;
+  color:var(--blue-900)!important;
+  letter-spacing:.2px;
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+}
+.navbar .navbar-brand img{
+  height:48px; width:auto; display:block;
+}
+@media (min-width: 992px){
+  .navbar .navbar-brand img{ height:56px; }
+}
+
+/* Menus azuis (requisito) */
+.navbar .nav-link{
+  color:var(--blue-900);
+  font-weight:600;
+  margin:0 .4rem;
+}
+.navbar .nav-link:hover{ color:var(--blue-800); }
+
+/* Botões padrões */
+.btn-outline-brand{
+  border:2px solid var(--blue-900);
+  color:var(--blue-900);
+  font-weight:700;
+  border-radius:var(--radius);
+}
+.btn-outline-brand:hover{ background:var(--blue-900); color:#fff; }
+
+.btn-brand{
+  background:var(--amber);
+  color:#fff;
+  font-weight:800;
+  border:none;
+  border-radius:var(--radius);
+  box-shadow:0 10px 22px rgba(255,127,50,.18);
+}
+.btn-brand:hover{ background:var(--amber-700); }
+
+/* Footer igual ao dashboard */
+.landing-footer{
+  background:#f8f9fa;
+  padding:32px 0;
+  font-size:1rem;
+  color:#777;
+  border-top:1px solid var(--line);
+}
+.landing-footer a{ color:#6c757d; }
+.landing-footer a:hover{ color:var(--blue-900); }
+.landing-footer .text-muted{ color:#6c757d !important; }
+
+
+html, body { height: 100%; }
+
+body{
+  min-height: 100vh;       
+  display: flex;
+  flex-direction: column;
+}
+
+footer.landing-footer{
+  margin-top: auto;
+}
+
