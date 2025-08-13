@@ -6,7 +6,7 @@ set -e
 
 
 collectstatic.sh
-makemigrations.sh
+#makemigrations.sh
 runserver.sh
 migrate.sh
 #gunicorn.sh
