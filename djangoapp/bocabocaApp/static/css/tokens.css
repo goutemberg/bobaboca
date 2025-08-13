@@ -1,0 +1,50 @@
+/* =============== BocaBoca — TOKENS ================== */
+:root{
+  /* Cores principais */
+  --amber:      #ff7f32;  /* CTA principal */
+  --amber-700:  #ff6b00;
+
+  --blue-900:   #002D80;  /* títulos / navbar */
+  --blue-800:   #003C8F;  /* barra e títulos */
+  --blue-soft:  #3A64BE;  /* bordas sutis (hero/busca) */
+
+  /* Neutros */
+  --text-900: #333333;
+  --text-700: #555555;
+  --line:     #E9EDF5;
+  --bg:       #FFFFFF;
+  --muted:    #F7F8FB;
+
+  /* Dimensões */
+  --radius: 8px;
+  --shadow: 0 10px 20px rgba(0,0,0,.08);
+
+  /* Tipografia */
+  --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* ========== TOKENS (cores, raios, sombras, tipografia) ========== */
+:root{
+  /* Brand */
+  --amber:#ff7f32;
+  --amber-700:#ff6b00;
+
+  /* Azul */
+  --blue-900:#002D80;
+  --blue-800:#003C8F;
+  --blue-soft:#3A64BE; /* azul mais sutil (borda da busca do hero) */
+
+  /* Neutros */
+  --text-900:#333333;
+  --text-700:#555555;
+  --line:#E9EDF5;
+  --bg:#fff;
+  --muted:#F7F8FB;
+
+  /* Layout */
+  --radius:8px;               /* raios menos arredondados */
+  --shadow:0 10px 20px rgba(0,0,0,.08);
+
+  /* Medidas comuns */
+  --hero-min-h:520px;
+}

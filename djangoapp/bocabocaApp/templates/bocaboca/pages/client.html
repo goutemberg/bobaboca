@@ -9,9 +9,17 @@
     <link rel="shortcut icon" href="{{ bocaboca_setup.favicon.url }}" type="image/png" />
   {% endif %}
 
-  <!-- Bootstrap local (deve vir ANTES do seu CSS) -->
+  <!-- Bootstrap local (antes do seu CSS) -->
   <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}">
-  <link rel="stylesheet" href="{% static 'css/bocaboca.css' %}?v=uniform1">
+
+  <!-- Design System -->
+  <link rel="stylesheet" href="{% static 'css/tokens.css' %}?v=1">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}?v=1">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}?v=1">
+
+  <!-- CSS específico desta página -->
+  <link rel="stylesheet" href="{% static 'css/auth-client.css' %}?v=1">
+
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body class="auth-page">
@@ -19,9 +27,9 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg">
   <div class="container">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
-      <img src="{% static 'brand/logo.png' %}" alt="logo" height="28" class="rounded-circle">
-      <span class="fw-semibold">BocaBoca</span>
+    <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'bocaboca:index' %}">
+  <img src="{% static 'bocaboca/images/logo/logo.PNG' %}" alt="logo" class="rounded-circle">
+  <span style="color:var(--amber)">bocaboca</span>
     </a>
     <div class="ms-auto d-flex align-items-center gap-3">
       <span class="text-white-50">Já tem uma conta?</span>
@@ -100,7 +108,19 @@
     </div>
   </div>
 </header>
-
+ <!-- FOOTER (igual ao dashboard/landing) -->
+  <footer class="landing-footer">
+    <div class="container px-4 px-lg-5">
+      <div class="d-flex justify-content-center">
+        <a href="https://x.com" class="text-muted mx-3" target="_blank"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/whitelabelrobochat/" class="text-muted mx-3" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://api.whatsapp.com/send?phone=+5531998210115&text=Olá!" class="text-muted mx-3" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://youtube.com/@whitelabel" class="text-muted mx-3" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://telegram.org" class="text-muted mx-3" target="_blank"><i class="fab fa-telegram"></i></a>
+      </div>
+      <div class="small text-center text-muted mt-3">Copyright &copy; {% now "Y" %} - Boca a Boca</div>
+    </div>
+  </footer>
 <!-- Bootstrap local -->
 <script src="{% static 'vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
 

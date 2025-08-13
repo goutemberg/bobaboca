@@ -1,0 +1,187 @@
+/* ================================
+   Paleta de Cores
+=================================== */
+:root {
+  --amber: #FF6B00;
+  --amber-light: #FF8533;
+  --amber-dark: #CC5500;
+
+  --blue: #0B1E3F;
+  --blue-light: #1C3F75;
+
+  --gray-light: #f9f9f9;
+  --gray-medium: #e5e5e5;
+  --gray-dark: #555;
+
+  --white: #fff;
+  --black: #000;
+}
+
+/* ================================
+   Reset e Base
+=================================== */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", Arial, sans-serif;
+  background-color: var(--white);
+  color: var(--blue);
+}
+
+a {
+  color: var(--amber);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--amber-dark);
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ================================
+   Navbar
+=================================== */
+.navbar {
+  background-color: var(--white);
+  border-bottom: 1px solid var(--gray-medium);
+}
+.navbar .navbar-brand {
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: var(--amber);
+}
+.navbar .nav-link {
+  color: var(--blue);
+}
+.navbar .nav-link:hover {
+  color: var(--amber);
+}
+
+/* ================================
+   Botões
+=================================== */
+.btn-primary {
+  background-color: var(--amber);
+  border-color: var(--amber);
+  color: var(--white);
+}
+.btn-primary:hover {
+  background-color: var(--amber-dark);
+  border-color: var(--amber-dark);
+}
+
+.btn-outline-primary {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+.btn-outline-primary:hover {
+  background-color: var(--amber);
+  color: var(--white);
+}
+
+/* ================================
+   Cards
+=================================== */
+.card {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  background-color: var(--white);
+}
+.card-header {
+  background-color: var(--amber);
+  color: var(--white);
+  font-weight: bold;
+}
+.card-body {
+  padding: 1.25rem;
+}
+
+/* ================================
+   Formulários
+=================================== */
+.form-control {
+  border-radius: 6px;
+  border: 1px solid var(--gray-medium);
+  padding: 0.6rem;
+}
+.form-control:focus {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 0.2rem rgba(255, 107, 0, 0.25);
+}
+
+/* ================================
+   Footer
+=================================== */
+.footer {
+  background-color: var(--blue);
+  color: var(--white);
+  padding: 2rem 0;
+  text-align: center;
+}
+.footer a {
+  color: var(--amber-light);
+}
+.footer a:hover {
+  color: var(--amber);
+}
+
+/* ================================
+   Elementos decorativos
+=================================== */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--blue);
+  margin-bottom: 1rem;
+  border-left: 5px solid var(--amber);
+  padding-left: 0.5rem;
+}
+
+.bg-amber {
+  background-color: var(--amber) !important;
+  color: var(--white) !important;
+}
+
+.bg-blue {
+  background-color: var(--blue) !important;
+  color: var(--white) !important;
+}
+
+/* ================================
+   Layout Responsivo
+=================================== */
+@media (max-width: 768px) {
+  .navbar .navbar-brand {
+    font-size: 1rem;
+  }
+  .section-title {
+    font-size: 1.25rem;
+  }
+}
+/* Ajusta a largura do card "Crie sua conta" */
+.auth-card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    max-width: 420px; /* reduz largura máxima */
+    width: 100%;
+}
+
+/* Centraliza título e subtítulo */
+.auth-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    text-align: center;
+}
+
+.auth-sub {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-bottom: 1.2rem;
+    text-align: center;
+}

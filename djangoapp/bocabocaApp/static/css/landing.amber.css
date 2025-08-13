@@ -1,0 +1,86 @@
+/* ============================
+   Landing Page Amber Theme
+   ============================ */
+
+/* Paleta principal */
+:root {
+  --brand-orange: #ff7f32;
+  --brand-orange-dark: #e56e2d;
+  --brand-orange-light: #ff9860;
+  --brand-blue: #0066cc;
+  --text-dark: #212529;
+  --text-light: #fff;
+}
+
+/* Navbar */
+.navbar.landing-nav {
+  background-color: var(--brand-orange);
+}
+
+.navbar.landing-nav .navbar-brand,
+.navbar.landing-nav .nav-link {
+  color: var(--text-light) !important;
+}
+
+.navbar.landing-nav .nav-link:hover {
+  color: var(--brand-orange-light) !important;
+}
+
+/* Botões principais */
+.btn-brand {
+  background-color: var(--brand-orange);
+  color: var(--text-light);
+  border: none;
+}
+
+.btn-brand:hover {
+  background-color: var(--brand-orange-dark);
+  color: var(--text-light);
+}
+
+.btn-outline-brand {
+  background-color: transparent;
+  border: 2px solid var(--brand-orange);
+  color: var(--brand-orange);
+}
+
+.btn-outline-brand:hover {
+  background-color: var(--brand-orange);
+  color: var(--text-light);
+}
+
+/* Badge do usuário */
+.landing-user-badge {
+  background-color: var(--brand-orange-light) !important;
+  color: var(--text-dark) !important;
+  font-weight: 600;
+}
+
+/* Footer */
+footer.landing-footer {
+  background-color: #f8f9fa;
+  padding: 2rem 0;
+}
+
+footer.landing-footer a {
+  color: var(--brand-orange);
+  font-size: 1.3rem;
+  transition: color 0.2s ease-in-out;
+}
+
+footer.landing-footer a:hover {
+  color: var(--brand-orange-dark);
+}
+
+footer.landing-footer .text-muted {
+  color: #6c757d !important;
+}
+
+/* Links gerais */
+a {
+  color: var(--brand-orange);
+}
+
+a:hover {
+  color: var(--brand-orange-dark);
+}

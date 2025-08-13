@@ -1,64 +1,502 @@
-/* ===== BocaBoca Design System ===== */
+/* =========================================================
+   BocaBoca — Clean White + Amber + Blue
+   ========================================================= */
+
+/* Fonte */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* Paleta */
 :root{
-  --brand-900:#0E2230; --brand-800:#0A2C3A; --brand-700:#0A7F84;
-  --brand-600:#00A6A4; --brand-500:#22C7B8; --brand-300:#7CE8DA; --brand-100:#E9FAF6;
-  --ink-900:#0F1C24; --ink-700:#14323D; --ink-600:#29414D; --ink-500:#4C6A78;
-  --radius:18px; --shadow:0 8px 28px rgba(10,127,132,.15);
+  /* Amber (CTA) */
+  --amber-700:#FF6B00;   /* hover */
+  --amber-600:#FF7F32;   /* principal (suavizado) */
+  --amber-300:#FFE0C7;   /* realce leve */
+  --amber-100:#FFF6EF;
+
+  /* Blue (confiança) */
+  --blue-800:#0A2342;    /* navy para títulos/acentos */
+  --blue-700:#0048BA;    /* botões/links secundários */
+  --blue-100:#F2F6FF;
+
+  /* Neutros */
+  --ink-900:#111827;     /* títulos */
+  --ink-700:#334155;     /* texto */
+  --ink-600:#4B5563;     /* texto secundário */
+  --line:#EEF0F4;        /* bordas claras */
+  --bg:#FFFFFF;
+  --bg-muted:#F7F7F9;
+
+  --radius:16px;
+  --radius-sm:12px;
+  --shadow-sm:0 8px 20px rgba(17,24,39,.08);
+  --shadow-md:0 14px 30px rgba(17,24,39,.12);
 }
-body{ background: linear-gradient(180deg,var(--brand-100),#fff 40%); color:var(--ink-900); }
 
-/* Navbar */
-.navbar{ background: linear-gradient(135deg,var(--brand-900),var(--brand-700)); box-shadow: var(--shadow); }
-.navbar .navbar-brand,.navbar .nav-link,.navbar .btn{ color:#EAFDF8!important; }
-.navbar .nav-link.active{ color:#fff!important; font-weight:600; }
-
-/* Hero */
-.hero{
-  background: radial-gradient(1200px 500px at 10% -10%, var(--brand-500) 0%, transparent 45%),
-             radial-gradient(900px 400px at 110% -20%, var(--brand-300) 0%, transparent 50%);
-  border-radius: var(--radius); padding: 28px; margin-top: 22px; box-shadow: var(--shadow);
+html,body{height:100%}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color:var(--ink-900);
+  background:var(--bg);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
-.hero .avatar{
-  width:56px;height:56px;border-radius:50%;
-  background: linear-gradient(135deg,var(--brand-500),var(--brand-700));
-  display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:26px;
-  box-shadow:0 6px 14px rgba(0,0,0,.15); overflow:hidden;
+
+/* =========================================================
+   NAVBAR (branca, limpa)
+   ========================================================= */
+.auth-page .navbar{
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  box-shadow:none;
 }
-.hero h1{ font-size: clamp(1.2rem, 2vw, 1.6rem); margin:0; color:#08303A; }
-.hero .sub{ color:var(--ink-500); }
+.auth-page .navbar .navbar-brand{ color:var(--ink-900)!important; font-weight:800; letter-spacing:.2px; }
+.auth-page .navbar .nav-link{ color:#415167!important; font-weight:600; }
+.auth-page .navbar .nav-link:hover{ color:var(--ink-900)!important; }
 
-/* Cards & blocks */
-.card-lite{ background:#ffffffcc; backdrop-filter: blur(6px); border:1px solid #e8f5f2; border-radius: var(--radius); box-shadow: var(--shadow); }
-.section-title{ color:#08303A;font-weight:700;font-size:1.15rem;margin-bottom:12px; display:flex;align-items:center;gap:8px; }
-.section-title .dot{ width:10px;height:10px;border-radius:50%; background: linear-gradient(135deg,var(--brand-500),var(--brand-600)); box-shadow:0 4px 10px rgba(34,199,184,.45); }
+/* seu HTML traz "text-white-50" no span; forçamos um cinza adequado em páginas de auth */
+.auth-page .navbar .text-white-50{ color:#6B7280!important; }
 
-/* Métricas */
-.metric{ display:flex;align-items:center;gap:14px;padding:18px 16px; }
-.metric .ico{ width:44px;height:44px;border-radius:12px; background: linear-gradient(135deg,var(--brand-500),var(--brand-600));
-  display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px; box-shadow:0 8px 20px rgba(34,199,184,.35); }
-.metric .kpi{ font-size:1.35rem;font-weight:700;color:#08303A;line-height:1; }
-.metric .lbl{ font-size:.92rem;color:var(--ink-500);margin:0; }
+/* Botão da navbar no novo estilo (outline azul) */
+.auth-page .btn-ghost{
+  background:#fff; color:var(--blue-700); border:1px solid var(--blue-700);
+  padding:8px 14px; border-radius:12px; font-weight:700; transition:.2s ease;
+}
+.auth-page .btn-ghost:hover{ background:var(--blue-700); color:#fff; transform:translateY(-1px); }
 
-/* Botões */
+/* =========================================================
+   HERO DE AUTENTICAÇÃO
+   ========================================================= */
+.auth-hero{
+  display:flex; align-items:flex-start; justify-content:center;
+  padding:56px 16px 72px; min-height:700px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-muted) 85%);
+}
+.auth-hero .auth-card{
+  width:100%; max-width:720px; margin:0 auto;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:32px 28px;
+  box-shadow:var(--shadow-sm);
+}
+.auth-title{
+  font-weight:800; letter-spacing:-.02em;
+  color:var(--blue-800);
+  font-size:clamp(1.9rem, 2.4vw, 2.25rem);
+  margin-bottom:6px;
+}
+.auth-sub{ color:var(--ink-600); margin-bottom:18px; }
+
+/* =========================================================
+   TABS (E-mail / Telefone)
+   ========================================================= */
+.tab-toggle{
+  display:flex; gap:10px; margin-bottom:18px;
+}
+.tab-toggle .btn{
+  flex:1 1 0;
+  border-radius:12px;
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--ink-700);
+  font-weight:700;
+  padding:10px 12px;
+  box-shadow:0 2px 8px rgba(17,24,39,.06);
+  transition:.15s ease;
+}
+.tab-toggle .btn:hover{ transform:translateY(-1px); }
+.tab-toggle .btn.active{
+  background: linear-gradient(135deg, var(--amber-600), var(--amber-700));
+  color:#fff; border-color:transparent;
+  box-shadow:0 10px 20px rgba(255,123,50,.18);
+}
+
+/* =========================================================
+   FORMULÁRIOS
+   ========================================================= */
+.form-label{
+  font-weight:700; color:var(--ink-700);
+  margin-bottom:8px; padding-left:4px;
+}
+.form-control{
+  border-radius:12px;
+  border:1px solid var(--line);
+  padding:12px 14px; font-size:1rem;
+}
+.form-control::placeholder{ color:#9AA4B2; }
+.form-control:focus{
+  border-color:var(--amber-600);
+  box-shadow:0 0 0 .25rem rgba(255,127,50,.18);
+}
+
+/* Botão principal (ÂMBAR) */
 .btn-brand{
-  background: linear-gradient(135deg,var(--brand-600),var(--brand-700));
-  border:none;color:#fff;padding:10px 16px;border-radius:12px;font-weight:600;
-  box-shadow:0 10px 20px rgba(0,166,164,.25);
+  height:48px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg, var(--amber-600), var(--amber-700));
+  color:#fff;
+  font-weight:800; letter-spacing:.2px;
+  box-shadow:0 12px 22px rgba(255,123,50,.20);
+  transition:transform .12s ease, box-shadow .2s ease, filter .2s ease;
 }
-.btn-brand:hover{ filter:brightness(.98); transform: translateY(-1px); }
-.btn-ghost{ background: transparent;color: var(--brand-700); border:1px solid var(--brand-300); padding:10px 16px;border-radius:12px;font-weight:600; }
+.btn-brand:hover{
+  filter:brightness(.98);
+  transform:translateY(-1px);
+  box-shadow:0 16px 28px rgba(255,123,50,.24);
+}
 
-/* Progress */
-.progress{ height:10px;border-radius:999px;background:#E6F6F3;overflow:hidden; }
-.progress-bar{ background: linear-gradient(90deg,var(--brand-500),var(--brand-600)); }
+/* Alertas dentro do card */
+.auth-card .alert{
+  border:none; border-radius:12px; font-size:.95rem;
+}
+.auth-card .alert-success{ background:#E8F9F0; color:#176B4D; }
+.auth-card .alert-danger { background:#FDE8E8; color:#7F1D1D; }
+.auth-card .alert-warning{ background:#FFF6E6; color:#7A4B22; }
 
-/* Tabela / vazios */
-.table thead th{ color:#0b3a46;border-bottom:1px solid #dff4ef;font-weight:700; }
-.table tbody td{ color:#24434d; }
-.empty{ border:1px dashed #bfece4;border-radius:12px;padding:22px;text-align:center;color:var(--ink-500); background:#f5fffd; }
+/* =========================================================
+   UTILITÁRIOS
+   ========================================================= */
+.text-muted-ink{ color:var(--ink-600)!important; }
+.card-lite{ background:#fff; border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow-sm); }
 
-/* Footer */
-.app-footer{ color:var(--ink-600);font-size:.9rem;padding:28px 0; }
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+@media (max-width:576px){
+  .auth-hero .auth-card{ padding:24px; border-radius:14px; }
+  .auth-title{ font-size:1.65rem; }
+}
 
-/* Utilidades */
-.text-muted-ink{ color:var(--ink-500)!important; }
+/* === BOCA AMBER OVERRIDES (aplicação global, fim do arquivo) === */
+:root{
+  --amber-700:#FF6B00;
+  --amber-600:#FF7F32;
+  --amber-300:#FFE0C7;
+  --amber-100:#FFF6EF;
+
+  --blue-800:#0A2342;
+  --blue-700:#0048BA;
+  --blue-100:#F2F6FF;
+
+  --ink-900:#111827;
+  --ink-700:#334155;
+  --ink-600:#4B5563;
+
+  --line:#EEF0F4;
+  --bg:#FFFFFF;
+  --bg-muted:#F7F7F9;
+}
+
+/* Navbar branca (limpa) */
+.auth-page .navbar{ background:#fff; border-bottom:1px solid var(--line) }
+.auth-page .navbar .navbar-brand{ color:var(--ink-900)!important; font-weight:800; letter-spacing:.2px }
+.auth-page .navbar .text-white-50{ color:#6B7280!important }
+.auth-page .btn-ghost{
+  background:#fff; color:var(--blue-700); border:1px solid var(--blue-700);
+  padding:8px 14px; border-radius:12px; font-weight:700; transition:.2s ease;
+}
+.auth-page .btn-ghost:hover{ background:var(--blue-700); color:#fff; transform:translateY(-1px) }
+
+/* Hero / Card */
+.auth-hero{
+  display:flex; align-items:flex-start; justify-content:center;
+  padding:56px 16px 72px; min-height:700px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-muted) 85%);
+}
+.auth-hero .auth-card{
+  width:100%; max-width:720px; margin:0 auto; background:#fff;
+  border:1px solid var(--line); border-radius:16px; padding:32px 28px;
+  box-shadow:0 8px 20px rgba(17,24,39,.08);
+}
+.auth-title{ font-weight:800; letter-spacing:-.02em; color:var(--blue-800); font-size:clamp(1.9rem,2.4vw,2.25rem); margin-bottom:6px }
+.auth-sub{ color:var(--ink-600); margin-bottom:18px }
+
+/* Abas */
+.tab-toggle{ display:flex; gap:10px; margin-bottom:18px }
+.tab-toggle .btn{
+  flex:1 1 0; border-radius:12px; background:#fff; border:1px solid var(--line);
+  color:var(--ink-700); font-weight:700; padding:10px 12px; box-shadow:0 2px 8px rgba(17,24,39,.06);
+  transition:.15s ease;
+}
+.tab-toggle .btn:hover{ transform:translateY(-1px) }
+.tab-toggle .btn.active{
+  background: linear-gradient(135deg, var(--amber-600), var(--amber-700));
+  color:#fff; border-color:transparent; box-shadow:0 10px 20px rgba(255,123,50,.18);
+}
+
+/* Inputs + foco âmbar */
+.form-label{ font-weight:700; color:var(--ink-700); margin-bottom:8px; padding-left:4px }
+.form-control{ border-radius:12px; border:1px solid var(--line); padding:12px 14px; font-size:1rem }
+.form-control::placeholder{ color:#9AA4B2 }
+.form-control:focus{ border-color:var(--amber-600); box-shadow:0 0 0 .25rem rgba(255,127,50,.18) }
+
+/* CTA âmbar */
+.btn-brand{
+  height:48px; border:none; border-radius:12px;
+  background: linear-gradient(135deg, var(--amber-600), var(--amber-700));
+  color:#fff; font-weight:800; letter-spacing:.2px;
+  box-shadow:0 12px 22px rgba(255,123,50,.20);
+  transition:transform .12s ease, box-shadow .2s ease, filter .2s ease;
+}
+.btn-brand:hover{ filter:brightness(.98); transform:translateY(-1px); box-shadow:0 16px 28px rgba(255,123,50,.24) }
+
+/* === TYPO UPGRADE — Manrope + Inter (mockup vibe) === */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap');
+
+:root{
+  --font-ui: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: Manrope, Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --lh-tight: 1.12;
+  --lh-normal: 1.45;
+  --track-tight: -0.02em;       /* leve compressão para títulos */
+  --track-wide: 0.02em;         /* leve abertura em botões/labels */
+  /* escala fluida */
+  --fs-h1: clamp(2rem, 2.8vw, 2.75rem);
+  --fs-h2: clamp(1.5rem, 1.8vw, 1.75rem);
+  --fs-h3: clamp(1.125rem, 1.2vw, 1.25rem);
+}
+
+/* Base */
+body{ font-family: var(--font-ui); line-height: var(--lh-normal) }
+.navbar .navbar-brand{
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: var(--track-tight);
+}
+
+/* Títulos gerais */
+h1,h2,h3,.display, .auth-title{
+  font-family: var(--font-display);
+  letter-spacing: var(--track-tight);
+  line-height: var(--lh-tight);
+  color: var(--blue-800);
+}
+h1,.display{ font-size: var(--fs-h1); }
+h2, .section-title{ font-size: var(--fs-h2); }
+h3{ font-size: var(--fs-h3); }
+
+/* H1 do dashboard “Bem‑vindo…” */
+.hero h1, .dashboard-title{
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: var(--track-tight);
+  line-height: var(--lh-tight);
+}
+
+/* Subtítulos e microcopy */
+.auth-sub, .sub, small, .text-muted-ink{
+  letter-spacing: 0;
+  color: var(--ink-600);
+}
+
+/* Números consistentes (cards KPI, contagens, valores) */
+.kpi, .metric .kpi, .badge, .count, .price, .progress-value{
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+/* Botões com tipografia “popular” */
+.btn, .btn-brand, .btn-ghost{
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: var(--track-wide);
+  line-height: 1;
+}
+
+/* Inputs e labels mais sólidos */
+.form-label{
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.form-control{
+  font-family: var(--font-ui);
+  font-size: 1rem;
+}
+
+/* Tabs (E-mail/Telefone) com fonte display */
+.tab-toggle .btn{
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: var(--track-wide);
+}
+
+/* Navbar links ligeiramente mais fortes */
+.navbar .nav-link{
+  font-weight: 600;
+  letter-spacing: .005em;
+}
+
+/* Ajustes específicos das páginas de auth */
+.auth-title{ font-size: var(--fs-h1); }
+.auth-sub{ font-size: 1.01rem; }
+
+/* Pequeno refinamento no título dos cards/seções */
+.section-title{
+  border-left: 6px solid var(--amber-600);
+  padding-left: .6rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: var(--track-tight);
+}
+
+/* Botões: centralização vertical/horizontal perfeita */
+.btn,
+.btn-brand,
+.btn-ghost {
+  display: inline-flex;              /* evita "texto pendurado" */
+  align-items: center;               /* centro vertical */
+  justify-content: center;           /* centro horizontal */
+  gap: 8px;                          /* espaço entre ícone e texto */
+  line-height: 1;                    /* remove altura “sobrando” do texto */
+  padding-block: 12px;               /* altura confortável */
+}
+
+/* Ícones Bootstrap dentro do botão */
+.btn .bi,
+.btn-brand .bi,
+.btn-ghost .bi {
+  font-size: 1.05em;
+  margin-top: 0;                     /* garante alinhamento com o texto */
+  transform: translateY(0);          /* zera qualquer ajuste herdado */
+}
+
+/* Ring âmbar sutil nos KPIs */
+.kpi-card,
+#kpiRow .card {
+  border: 2px solid var(--amber-600) !important;
+  box-shadow: 0 8px 20px rgba(17,24,39,.04);  /* mantém a elegância */
+}
+
+/* Título/ícone dos KPIs mais fortes (opcional) */
+.kpi-card .section-title,
+#kpiRow .card .section-title {
+  border-left-color: var(--amber-600);
+}
+
+/* Valores e labels com melhor hierarquia */
+.kpi-card .kpi-value,
+#kpiRow .card .kpi-value {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  line-height: 1.05;
+  color: var(--ink-900);
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-card .kpi-label,
+#kpiRow .card .kpi-label {
+  color: var(--ink-600);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* ===== KPI cards ===== */
+.kpi-card{
+  border:2px solid var(--amber-600) !important;
+  border-radius:16px;
+  box-shadow:0 10px 22px rgba(17,24,39,.05);
+  padding:16px 18px;
+}
+
+.kpi{
+  display:flex; align-items:center; gap:14px;
+}
+
+.kpi-icon{
+  width:48px; height:48px; border-radius:999px;
+  background:linear-gradient(135deg,var(--amber-600),var(--amber-700));
+  color:#fff; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 12px 22px rgba(255,123,50,.25);
+  flex:0 0 auto;
+}
+.kpi-icon .bi{ font-size:1.25rem; line-height:1; }
+
+.kpi-stack{ display:flex; flex-direction:column; }
+.kpi-value{
+  font-family:var(--font-display);
+  font-weight:800; line-height:1.05;
+  font-size:clamp(1.25rem,1.9vw,1.6rem);
+  color:var(--ink-900);
+  font-variant-numeric:tabular-nums;
+}
+.kpi-label{
+  color:var(--ink-600);
+  font-weight:600;
+  margin-top:2px;
+}
+
+@media (max-width:576px){
+  .kpi-card{ padding:14px 16px; }
+  .kpi-icon{ width:44px; height:44px; }
+}
+
+/* ===== Avatar grande com ring gradiente ===== */
+.avatar-ring{
+  display:inline-flex; padding:3px; border-radius:999px;
+  background: conic-gradient(from 180deg,
+              var(--amber-600), var(--amber-700) 45%,
+              var(--blue-700) 55%, var(--blue-800));
+  box-shadow:0 10px 22px rgba(17,24,39,.08);
+}
+.avatar-lg{
+  width:64px; height:64px; border-radius:50%;
+  object-fit:cover; background:#fff; display:block;
+}
+
+/* Fallback com iniciais */
+.avatar-initials{
+  width:64px; height:64px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:#fff; color:var(--blue-800);
+  font-family:var(--font-display); font-weight:800; font-size:1.2rem;
+}
+
+/* ===== Página de Confirmação de E-mail ===== */
+
+/* Container principal */
+.confirm-email-container {
+    max-width: 600px;
+    margin: 60px auto;
+    background: #fff;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+/* Título */
+.confirm-email-container h3 {
+    color: var(--primary-color, #007bff);
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Parágrafos */
+.confirm-email-container p {
+    color: #555;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+/* Botão de login */
+.confirm-email-container .btn-primary {
+    font-size: 1.1rem;
+    padding: 12px 20px;
+    border-radius: 50px;
+}
+
+/* Link de e-mail */
+.confirm-email-container a {
+    color: var(--primary-color, #007bff);
+    text-decoration: none;
+}
+.confirm-email-container a:hover {
+    text-decoration: underline;
+}
+

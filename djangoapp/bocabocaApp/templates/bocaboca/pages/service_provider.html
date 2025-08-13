@@ -6,23 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ bocaboca_setup.title }}</title>
     {% if bocaboca_setup.favicon %}
-    <link rel="shortcut icon" href="{{ bocaboca_setup.favicon.url }}" type="image/png">
+        <link rel="shortcut icon" href="{{ bocaboca_setup.favicon.url }}" type="image/png">
     {% endif %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script>
-        // Mock: Substituir com integrações reais para as APIs do Facebook e Google
-        function loginWithFacebook() {
-            alert('Login com Facebook iniciado. Aqui você chamaria a API do Facebook.');
-        }
-
-        function loginWithGoogle() {
-            alert('Login com Google iniciado. Aqui você chamaria a API do Google.');
-        }
-    </script>
     <style>
-        /* Ajuste para alinhar título e botão de login */
+        body {
+            background-color: #f8f9fa;
+        }
+        /* Navbar */
         .navbar .input-group {
             display: flex;
             justify-content: flex-end;
@@ -34,16 +27,16 @@
             font-size: 1rem;
         }
         .btn-secondary.rounded-pill {
-            border-radius: 50px; /* Borda arredondada */
-            padding: 10px 20px; /* Ajuste de espaço interno */
+            border-radius: 50px;
+            padding: 10px 20px;
         }
+        /* Container de cadastro */
         .login-container {
             background: #fff;
             padding: 40px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             max-width: 400px;
-            margin: 50px auto;
             text-align: center;
         }
         .btn-facebook, .btn-google {
@@ -72,6 +65,12 @@
             flex: 1;
             border-bottom: 1px solid #ddd;
         }
+        .separator:not(:empty)::before {
+            margin-right: .75em;
+        }
+        .separator:not(:empty)::after {
+            margin-left: .75em;
+        }
         .g-recaptcha {
             margin: 20px 0;
             transform: scale(0.85);
@@ -81,13 +80,25 @@
             font-size: 1.2rem;
             height: 50px;
         }
+        /* Footer */
+        footer .text-muted {
+            font-size: 1.3rem;
+        }
     </style>
+    <script>
+        function loginWithFacebook() {
+            alert('Login com Facebook iniciado. Aqui você chamaria a API do Facebook.');
+        }
+        function loginWithGoogle() {
+            alert('Login com Google iniciado. Aqui você chamaria a API do Google.');
+        }
+    </script>
 </head>
 <body>
     <!-- Top Menu -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="#">LOGO</a>
+            <a class="navbar-brand fw-bold" href="#">LOGO</a>
             <div class="input-group">
                 <h4 class="me-2">Já tem uma conta no Boca-Boca?</h4>
                 <a href="{% url 'bocaboca:login' %}" class="btn btn-secondary rounded-pill">Login</a>
@@ -96,38 +107,35 @@
     </nav>
 
     <!-- Header Section -->
-    <header class="bg-primary text-white text-center d-flex flex-column justify-content-center align-items-center" style="height: 700px; margin-bottom: 0;">
+    <header class="bg-primary text-white text-center d-flex flex-column justify-content-center align-items-center" style="min-height: 100vh; padding: 50px 0;">
         <div class="login-container">
             <form method="POST" action="{% url 'bocaboca_profile:send_activation_link' %}">
                 {% csrf_token %}
-                <h2>Cadastre-se</h2>
-                <div class="d-flex justify-content-between">
-                    <button class="btn btn-facebook" onclick="loginWithFacebook()">
+                <h2 class="mb-4">Cadastre-se</h2>
+                <div class="d-flex justify-content-between mb-3">
+                    <button type="button" class="btn btn-facebook" onclick="loginWithFacebook()">
                         <i class="fab fa-facebook-f"></i>
                     </button>
-                    <button class="btn btn-google" onclick="loginWithGoogle()">
+                    <button type="button" class="btn btn-google" onclick="loginWithGoogle()">
                         <i class="fab fa-google"></i>
                     </button>
                 </div>
                 <div class="separator">ou</div>
-                <div class="form-group">
-                    <label for="full-name">Nome completo</label>
-                    <input type="text" id="full-name" name="full_name" class="form-control" placeholder="Nome completo">
+                <div class="mb-3 text-start">
+                    <label for="full-name" class="form-label">Nome completo</label>
+                    <input type="text" id="full-name" name="full_name" class="form-control" placeholder="Nome completo" required>
                 </div>
-                <div class="form-group">
-                    <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="E-mail">
+                <div class="mb-3 text-start">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required>
                 </div>
-                <div class="form-group">
-                    <label for="password">Senha</label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Senha">
+                <div class="mb-3 text-start">
+                    <label for="password" class="form-label">Senha</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Senha" required>
                 </div>
-                <div class="form-group">
-                    <div class="g-recaptcha" data-sitekey="your-site-key"></div>
-                </div>
-                <button class="btn btn-success w-100">Cadastrar</button>
+                <div class="g-recaptcha" data-sitekey="your-site-key"></div>
+                <button class="btn btn-success w-100 mt-3">Cadastrar</button>
             </form>
-            
         </div>
     </header>
 
@@ -141,7 +149,7 @@
                 <a href="https://instagram.com/whitelabelrobochat/" class="text-muted mx-3" target="_blank">
                     <i class="fab fa-instagram"></i>
                 </a>
-                <a href="https://api.whatsapp.com/send?phone=+5531998210115&text=Olá!" class="text-muted mx-3" target="_blank"> 
+                <a href="https://api.whatsapp.com/send?phone=+5531998210115&text=Olá!" class="text-muted mx-3" target="_blank">
                     <i class="fab fa-whatsapp"></i>
                 </a>
                 <a href="https://youtube.com/@whitelabel" class="text-muted mx-3" target="_blank">
@@ -151,8 +159,10 @@
                     <i class="fab fa-telegram"></i>
                 </a>
             </div>
-            <div class="small text-center text-muted mt-3">Copyright &copy; {% now "Y" %} - Boca a Boca</div>
-        </div>  
+            <div class="small text-center text-muted mt-3">
+                Copyright &copy; {% now "Y" %} - Boca a Boca
+            </div>
+        </div>
     </footer>
 </body>
 </html>

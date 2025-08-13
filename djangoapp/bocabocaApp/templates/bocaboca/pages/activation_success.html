@@ -2,150 +2,152 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ bocaboca_setup.title }}</title>
-    {% if bocaboca_setup.favicon %}
-    <link rel="shortcut icon" href="{{ bocaboca_setup.favicon.url }}" type="image/png">
-    {% endif %}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <style>
-        /* Ajuste para alinhar título e botão de login */
-        .navbar .input-group {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
-        .navbar h4 {
-            margin: 0;
-            margin-right: 10px;
-            font-size: 1rem;
-        }
-        .btn-secondary {
-            border-radius: 50px !important; /* Garante arredondamento completo */
-            padding: 10px 20px; /* Ajusta o tamanho do botão */
-            font-size: 1rem; /* Ajusta o tamanho do texto */
-            text-align: center;
-            display: inline-block;
-            white-space: nowrap; /* Evita quebra de texto */
-            border: none; /* Remove bordas padrão */
-        }
-        .btn-secondary:hover {
-            background-color: #6c757d;
-            color: #fff;
-        }
-        .login-container {
-            background: #fff;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            margin: 50px auto;
-            text-align: center;
-        }
-        .login-container button {
-            margin-bottom: 10px;
-            width: 48%; /* Ajuste para botões lado a lado */
-            display: inline-block;
-            height: 60px; /* Aumenta a altura dos botões */
-            font-size: 1.5rem; /* Ajusta o tamanho do ícone */
-        }
-        .btn-google {
-            background-color: #db4a39;
-            color: white;
-            border: none;
-        }
-        .btn-google:hover {
-            background-color: #c23321;
-        }
-        .btn-facebook {
-            background-color: #4267B2;
-            color: white;
-            border: none;
-        }
-        .btn-facebook:hover {
-            background-color: #365899;
-        }
-        .separator {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 20px 0;
-            color: #555;
-            font-weight: bold;
-        }
-        .separator::before,
-        .separator::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid #ddd;
-        }
-        .separator:not(:empty)::before {
-            margin-right: .25em;
-        }
-        .separator:not(:empty)::after {
-            margin-left: .25em;
-        }
-        .g-recaptcha {
-            margin: 20px 0;
-            transform: scale(0.85);
-            transform-origin: center;
-        }
-        .btn-success {
-            font-size: 1.2rem;
-            height: 50px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ bocaboca_setup.title }}</title>
+  {% if bocaboca_setup.favicon %}
+    <link rel="shortcut icon" href="{{ bocaboca_setup.favicon.url }}" type="image/png" />
+  {% endif %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+  <style>
+    /* ===== TOKENS ===== */
+    :root{
+      --amber:#ff7f32;
+      --amber-700:#ff6b00;
+
+      --blue-900:#002D80;
+      --blue-800:#003C8F;
+
+      --text-900:#333333;
+      --text-700:#555555;
+      --line:#E9EDF5;
+      --bg:#fff;
+
+      --radius:8px;
+      --shadow:0 10px 20px rgba(0,0,0,.08);
+    }
+
+    html, body{ height:100%; }
+    body{
+      display:flex; flex-direction:column;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color:var(--text-900); background:var(--bg);
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar.landing-top{ background:#fff; border-bottom:1px solid var(--line); }
+    .navbar-brand{
+      font-weight:800; color:var(--blue-900)!important; letter-spacing:.2px;
+      display:inline-flex; align-items:center; gap:.5rem;
+    }
+    .navbar-brand img{ height:48px; width:auto; display:block; }
+    .btn-outline-brand{
+      border:2px solid var(--blue-900); color:var(--blue-900); font-weight:700; border-radius:var(--radius);
+    }
+    .btn-outline-brand:hover{ background:var(--blue-900); color:#fff; }
+    .btn-brand{
+      background:var(--amber); color:#fff; font-weight:800; border:none; border-radius:var(--radius);
+      box-shadow:0 10px 22px rgba(255,127,50,.18);
+    }
+    .btn-brand:hover{ background:var(--amber-700); }
+
+    /* ===== HERO ===== */
+    header.confirm-hero{
+      flex:1 0 auto;
+      display:flex; align-items:center; justify-content:center;
+      padding:40px 16px;
+      color:#fff; text-align:center;
+      background:
+        linear-gradient(180deg, rgba(255,127,50,.72) 0%, rgba(255,127,50,.58) 38%, rgba(255,127,50,.70) 100%),
+        url("{% static 'bocaboca/images/hero/obra.jpg' %}") center/cover no-repeat;
+    }
+
+    /* ===== CARD ===== */
+    .confirm-card{
+      width:100%; max-width:680px; /* mesmo respiro das outras páginas */
+      background:#fff; color:var(--text-900);
+      border:1px solid var(--line); border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      text-align:left;
+      padding:28px;
+    }
+    .confirm-card h3{
+      margin:0 0 .5rem 0; font-weight:900; color:var(--blue-900);
+    }
+    .confirm-card p{ color:var(--text-700); margin-bottom:.75rem; }
+    .confirm-card a{ text-decoration:none; }
+
+    /* ===== FOOTER ===== */
+    .landing-footer{
+      background:#f8f9fa; padding:24px 0; font-size:1rem; color:#777; border-top:1px solid var(--line);
+    }
+    .landing-footer a{ color:#6c757d; }
+    .landing-footer a:hover{ color:var(--blue-900); }
+
+    @media (min-width: 992px){
+      .navbar-brand img{ height:56px; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Top Menu -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">LOGO</a>
-            <div class="input-group">
-                <h4 class="me-2">Ainda não tem conta?</h4>
-                <a href="{% url 'bocaboca:register' %}" class="btn btn-secondary">Cadastra-se</a>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Header Section -->
-    <header class="bg-primary text-white text-center d-flex flex-column justify-content-center align-items-center" style="height: 700px; margin-bottom: 0;">
-        <div class="sucess-email-container">
-            
-            <h3 class="me-2">Acesse o seu email e clique no link de confirmação.</h3>
-            
-            <p>A sua conta foi criada! Agora você precisa verificar seu email. Clique no link de confirmação que foi enviado para: {{ email }}.</p>
-            
-            <p>Isso confirma que você é um ser humano real com um endereço de email legítimo.</p>
-            
-            <p>Se por algum motivo não conseguir ativar a sua conta, fale com a nossa equipe: suporte@bocaboca.com.br.</p>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg landing-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="{% static 'bocaboca/images/logo/logo.PNG' %}" alt="logo" class="rounded-circle">
+        <span style="color:var(--amber)">bocaboca</span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div id="nav" class="collapse navbar-collapse">
+        <div class="ms-auto d-flex align-items-center gap-2">
+          <h4 class="mb-0" style="font-size:1rem; color:var(--text-700);">Ainda não tem conta?</h4>
+          <a href="{% url 'bocaboca:register' %}" class="btn btn-brand">Cadastre-se</a>
         </div>
-    </header>
-    <!-- Footer -->
-    <footer class="bg-light py-5">
-        <div class="container px-4 px-lg-5">
-            <div class="d-flex justify-content-center">
-                <a href="https://x.com" class="text-muted mx-3" target="_blank">
-                    <i class="fab fa-x-twitter"></i>
-                </a>
-                <a href="https://instagram.com/whitelabelrobochat/" class="text-muted mx-3" target="_blank">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="https://api.whatsapp.com/send?phone=+5531998210115&text=Olá!" class="text-muted mx-3" target="_blank"> 
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-                <a href="https://youtube.com/@whitelabel" class="text-muted mx-3" target="_blank">
-                    <i class="fab fa-youtube"></i>
-                </a>
-                <a href="https://telegram.org" class="text-muted mx-3" target="_blank">
-                    <i class="fab fa-telegram"></i>
-                </a>
-            </div>
-            <div class="small text-center text-muted mt-3">Copyright &copy; {% now "Y" %} - Boca a Boca</div>
-        </div>  
-    </footer>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO + CARD -->
+  <header class="confirm-hero">
+    <div class="confirm-card">
+      <h3>Acesse o seu e‑mail e clique no link de confirmação</h3>
+      <p>
+        A sua conta foi criada! Agora você precisa verificar seu e‑mail.
+        Clique no link de confirmação que foi enviado para:
+        <strong>{{ email }}</strong>.
+      </p>
+      <p>Isso confirma que você é um ser humano real com um endereço de e‑mail legítimo.</p>
+      <p>
+        Se por algum motivo não conseguir ativar a sua conta, fale com a nossa equipe:
+        <a href="mailto:suporte@bocaboca.com.br">suporte@bocaboca.com.br</a>.
+      </p>
+
+      <div class="d-grid mt-3">
+        <a href="{% url 'bocaboca:login' %}" class="btn btn-outline-brand">Ir para o Login</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- FOOTER -->
+  <footer class="landing-footer">
+    <div class="container px-4 px-lg-5">
+      <div class="d-flex justify-content-center">
+        <a href="https://x.com" class="text-muted mx-3" target="_blank"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com/whitelabelrobochat/" class="text-muted mx-3" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://api.whatsapp.com/send?phone=+5531998210115&text=Olá!" class="text-muted mx-3" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://youtube.com/@whitelabel" class="text-muted mx-3" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://telegram.org" class="text-muted mx-3" target="_blank"><i class="fab fa-telegram"></i></a>
+      </div>
+      <div class="small text-center text-muted mt-3">Copyright &copy; {% now "Y" %} - Boca a Boca</div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

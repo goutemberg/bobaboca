@@ -1,0 +1,193 @@
+/* ========== COMPONENTES REUTILIZÁVEIS (Landing + Login) ========== */
+
+/* ---- HERO: estrutura genérica (as cores/imagen são definidas em landing.css) ---- */
+.hero{
+  position:relative;
+  min-height:var(--hero-min-h);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:#fff;
+}
+.hero-inner{ width:min(860px, 92vw); }
+.hero h1{
+  font-weight:900;
+  font-size:clamp(1.9rem,3.1vw,2.8rem);
+  margin-bottom:.9rem;
+  text-shadow:0 2px 12px rgba(0,0,0,.15);
+}
+
+/* Busca central do hero */
+.hero-search{
+  position:relative;
+  margin-inline:auto;
+  width:min(720px,92vw);
+}
+.hero-input{
+  width:100%;
+  height:56px;
+  padding:0 64px 0 16px;
+  background:#fff;
+  color:#111;
+  border:3px solid var(--blue-soft);  /* azul mais sutil */
+  border-radius:10px;                  /* menos arredondado */
+  outline:none;
+}
+.hero-input::placeholder{ color:#8794a7; }
+
+/* Botão do ícone (sem borda, pedido seu) */
+.hero-go{
+  position:absolute;
+  right:6px;
+  top:50%;
+  transform:translateY(-50%);
+  width:44px; height:44px;
+  border-radius:999px;
+  border:0;                 /* <<< sem borda */
+  background:#fff;
+  color:var(--blue-soft);
+  display:inline-flex; align-items:center; justify-content:center;
+}
+
+/* Chips abaixo da busca */
+.hero-chips{
+  margin-top:14px;
+  display:flex; gap:12px; justify-content:center;
+}
+.btn-chip{
+  padding:8px 14px; line-height:1; font-weight:700;
+  border:2px solid var(--blue-soft);
+  color:var(--blue-soft);
+  background:#fff;
+  border-radius:8px;
+}
+.btn-chip:hover{ background:#f4f7ff; }
+
+/* ---- Stats (counters não clicáveis) ---- */
+.stats{ display:flex; flex-wrap:wrap; margin:0; }
+.counter{
+  flex:1 1 0;
+  min-width:260px;
+  background:#fff;
+  color:var(--text-900);
+  text-align:center;
+  padding:34px 20px;
+  border:2px solid var(--amber);
+  border-radius:var(--radius);
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  box-shadow:var(--shadow);
+}
+.counter h4{
+  color:var(--blue-900);
+  font-weight:800;
+  font-size:1.06rem;
+  margin-bottom:.45rem;
+}
+.counter p{
+  font-weight:900;
+  font-size:1.38rem;
+  margin:0; line-height:1.1;
+}
+
+/* ---- Portfolio (apenas imagens clicáveis) ---- */
+#portfolio{ margin-top:20px; }
+#portfolio .row.g-0{ display:flex; flex-wrap:wrap; gap:0; }
+.cat-card{ position:relative; }
+.cat-card > a{
+  display:block;              /* <<< garante que só o bloco da imagem seja link */
+  position:relative;
+}
+.cat-card img{
+  width:100%; height:100%;
+  object-fit:cover;
+  opacity:.88;
+  transition:.3s;
+  display:block;
+}
+.cat-card:hover img{ transform:scale(1.02); opacity:1; }
+.cat-card .overlay{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,.78);
+  color:#000; font-weight:800; font-size:1.25rem; text-decoration:none;
+  opacity:0; transition:.25s;
+}
+.cat-card:hover .overlay{ opacity:1; }
+
+/* ---- Depoimentos ---- */
+.testimonials-section{ background:var(--blue-900); padding:70px 0; }
+.testimonials-section h2{ color:#fff; font-weight:900; }
+#testimonialsCarousel .carousel-item{ display:flex; justify-content:center; gap:30px; }
+.testimonial-box{
+  max-width:320px;
+  padding:20px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:#fff;
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+
+/* ---- AUTH (login) ---- */
+.auth-hero{
+  min-height:700px;
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; color:#fff;
+  padding:40px 16px;
+}
+.auth-card{
+  width:100%; max-width:420px; margin:0 auto; text-align:left;
+  background:#fff; color:var(--text-900);
+  border:1px solid var(--line); border-radius:var(--radius);
+  padding:28px;
+  box-shadow:var(--shadow);
+}
+.auth-card h2{ font-weight:900; color:var(--blue-900); margin:0 0 10px; }
+
+/* Abas do login */
+.tab-toggle{
+  display:flex; justify-content:center; gap:0; margin-bottom:18px;
+  border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+}
+.tab-toggle .btn{
+  width:50%; border:0; border-radius:0; background:#fff; color:var(--blue-900);
+  font-weight:700; padding:10px 12px;
+}
+.tab-toggle .btn.active{ background:var(--blue-800); color:#fff; }
+
+/* Form padrão */
+.form-label{ font-weight:700; color:var(--text-900); margin-bottom:6px; }
+.form-control{
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  padding:12px 12px;
+  font-size:1rem;
+}
+.form-control:focus{
+  border-color:var(--blue-soft);
+  box-shadow:0 0 0 .2rem rgba(58,100,190,.18);
+}
+
+.g-recaptcha{ display:block; }
+.hidden{ display:none !important; }
+.auth-card .alert{ border-radius:var(--radius); border:none; }
+
+.professional-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--amber); /* ou outra cor do seu tema */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+}
+
+.professional-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
