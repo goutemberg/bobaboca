@@ -18,6 +18,19 @@ class MenuLink(models.Model):
     def __str__(self):
         return self.text
 
+class MenuLink2(models.Model):
+    class Meta:
+        verbose_name = 'Menu Link2'
+        verbose_name_plural = 'Menu Links2'
+
+    text = models.CharField(max_length=50)
+    url_or_path = models.CharField(max_length=2048)
+    new_tab = models.BooleanField(default=False)
+    bocaboca_setup = models.ForeignKey(
+        'BocabocaSetup', on_delete=models.CASCADE, blank=True, null=True,
+        default=None,
+    )
+
 class BocabocaSetup(models.Model):
     class Meta:
         verbose_name = 'Setup'

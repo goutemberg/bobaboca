@@ -25,7 +25,7 @@ DATA_DIR = BASE_DIR.parent / 'data' / 'web'
 SECRET_KEY = "#p43_gql#v9bnqldt8*nwh7-=vb_$brkzh($4jz#w$ko^l52-#"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
 
 
 ALLOWED_HOSTS = ['https://www.bobaboca.com.br','bobaboca.onrender.com','127.0.0.1','localhost', ".onrender.com",]
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -76,26 +77,60 @@ TEMPLATES = [
 WSGI_APPLICATION = 'bocaboca.wsgi.application'
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# (Opcional) evita crash se dj_database_url não estiver instalado no local
+try:
+    import dj_database_url
+except ImportError:
+    dj_database_url = None
+
+# Ajuda: defina DEBUG="true" no .env/local se quiser
+DEBUG = os.getenv("DEBUG", "false").lower() == "true"
+
+# 1) Preferir DATABASE_URL se existir (Render/Heroku/etc.)
 DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
 
-if DATABASE_URL:
+# 2) Suporte a POSTGRES_* (docker-compose)
+POSTGRES_VARS_PRESENT = all(
+    os.getenv(k) for k in ("POSTGRES_DB", "POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_HOST", "POSTGRES_PORT")
+)
+
+# Decide a fonte
+if DATABASE_URL and dj_database_url:
+    # Render geralmente exige SSL. Se seu provedor não exigir, troque ssl_require=False
+    # Truque: desativa SSL quando estiver em DEBUG, para funcionar no local com DATABASE_URL.
     DATABASES = {
         "default": dj_database_url.config(
             default=DATABASE_URL,
-            conn_max_age=600,
-            ssl_require=True,  # se seu Postgres exigir SSL no Render (normalmente sim)
+            conn_max_age=int(os.getenv("CONN_MAX_AGE", "600")),
+            ssl_require=not DEBUG,
         )
     }
-else:
-    # Fallback local/dev: SQLite em diretório gravável
-    SQLITE_PATH = BASE_DIR / "db.sqlite3"
+
+elif POSTGRES_VARS_PRESENT:
+    # Docker local com PostgreSQL via variáveis separadas
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": str(SQLITE_PATH),
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("POSTGRES_DB"),
+            "USER": os.getenv("POSTGRES_USER"),
+            "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+            "HOST": os.getenv("POSTGRES_HOST"),
+            "PORT": os.getenv("POSTGRES_PORT", "5432"),
+            "CONN_MAX_AGE": int(os.getenv("CONN_MAX_AGE", "600")),
+            # SSL local normalmente não precisa
+            "OPTIONS": {},
         }
     }
 
+else:
+    # 3) Fallback dev: SQLite no arquivo
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": str(BASE_DIR / "db.sqlite3"),
+        }
+    }
 #DATABASES = {
 #    'default': {
 #        'ENGINE': os.getenv('DB_ENGINE'),
@@ -148,8 +183,8 @@ MEDIA_ROOT = DATA_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# Email settings
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

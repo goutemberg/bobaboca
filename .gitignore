@@ -1,6 +1,6 @@
-/powersolar/static/
-/powersolar/media/
-/powersolar/project/local_settings.py
+/bocaboca/static/
+/bocaboca/media/
+/bocaboca/project/local_settings.py
 gunicorn-error-log
 __localcode
 /data/
